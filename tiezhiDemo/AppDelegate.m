@@ -9,6 +9,7 @@
 #import "AppDelegate.h"
 #import "ViewController.h"
 #import "PasterImageController.h"
+#import "CameraController.h"
 
 @interface AppDelegate ()
 
@@ -21,7 +22,7 @@
     // Override point for customization after application launch.
     self.window = [[UIWindow alloc]initWithFrame:[UIScreen mainScreen].bounds];
     self.window.backgroundColor = [UIColor whiteColor];
-    self.window.rootViewController = [[PasterImageController alloc]init];
+    self.window.rootViewController = [[CameraController alloc]init];
     [self.window makeKeyAndVisible];
     
     return YES;

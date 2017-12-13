@@ -20,11 +20,4 @@
     self.view.backgroundColor = [UIColor darkGrayColor];
 }
 
-
-- (void)didReceiveMemoryWarning {
-    [super didReceiveMemoryWarning];
-    // Dispose of any resources that can be recreated.
-}
-
-
 @end
