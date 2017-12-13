@@ -9,6 +9,8 @@
 #import "CameraController.h"
 #import <AVFoundation/AVFoundation.h>
 #import "LGCameraImageView.h"
+#import "PasterStageView.h"
+#import "PasterView.h"
 #define kScreenWidth [UIScreen mainScreen].bounds.size.width
 #define kScreenHeight [UIScreen mainScreen].bounds.size.height
 
@@ -24,7 +26,6 @@
 @property (nonatomic, strong) AVCaptureSession *session;
 /** 图像预览层，实时显示捕获的图像 */
 @property (nonatomic, strong) AVCaptureVideoPreviewLayer *previewLayer;
-@property (nonatomic, strong) UIView *pasterView;
 /** 摄像头方向*/
 @property (nonatomic, assign) AVCaptureDevicePosition position;
 @property (nonatomic, assign) AVCaptureFlashMode flashMode;
@@ -32,6 +33,10 @@
 @property (nonatomic, strong) UIButton *shotButton;
 @property (nonatomic, strong) UIButton *switchButton;
 @property (nonatomic, strong) UIButton *lightButton;
+
+/** 贴图 */
+@property (nonatomic, strong) PasterStageView *pasterStageView;
+
 @end
 
 @implementation CameraController
@@ -48,25 +53,7 @@
     
 }
 
-- (void)layoutSubviews{
-    [_shotButton mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.centerX.mas_equalTo(self.view);
-        make.bottom.mas_equalTo(self.view).offset(-50);
-        make.width.height.mas_equalTo(80);
-    }];
-    
-    [_switchButton mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.centerY.mas_equalTo(self.view);
-        make.left.mas_equalTo(self.view).offset(15);
-        make.width.height.mas_equalTo(30);
-    }];
-    
-    [_lightButton mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.centerX.mas_equalTo(_switchButton);
-        make.bottom.mas_equalTo(_switchButton.mas_top).offset(-30);
-        make.width.height.mas_equalTo(30);
-    }];
-}
+
 - (void)cameraDistrict{
     //1.创建会话层
     self.device = [AVCaptureDevice defaultDeviceWithMediaType:AVMediaTypeVideo];
@@ -96,14 +83,14 @@
     self.previewLayer = [[AVCaptureVideoPreviewLayer alloc]initWithSession:self.session];
     self.previewLayer.videoGravity = AVLayerVideoGravityResizeAspectFill;
     self.previewLayer.frame = CGRectMake(0, 40,viewWidth, viewHeight);
-    [self.pasterView.layer addSublayer:self.previewLayer];
     [self.view.layer addSublayer:self.previewLayer];
-    self.pasterView.frame = CGRectMake(0, 40,viewWidth, viewHeight);
-    UIView *view = [[UIView alloc]initWithFrame:CGRectMake(0, 0, 30, 30)];
-    view.backgroundColor = [UIColor blackColor];
-    [self.pasterView addSubview:view];
+//    [self.view.layer insertSublayer:self.previewLayer above:self.pasterStageView.layer];
     
-    [self.view addSubview:self.pasterView];
+    /** 放贴纸 */
+    PasterView *view = [[PasterView alloc]initWithFrame:CGRectMake(10, 10, 60, 60)];
+    [self.pasterStageView addSubview:view];
+    [self.view addSubview:self.pasterStageView];
+//    [self.view bringSubviewToFront:self.pasterStageView];
     /** 设备取景开始*/
     [self.session startRunning];
 }
@@ -142,11 +129,15 @@
     return _position;
 }
 
-- (UIView *)pasterView{
-    if (!_pasterView) {
-        _pasterView = [[UIView alloc]init];
+- (PasterStageView *)pasterStageView{
+    if (!_pasterStageView) {
+        CGFloat viewWidth = self.view.frame.size.width;
+        CGFloat viewHeight = viewWidth / 480 * 640;
+        _pasterStageView = [[PasterStageView alloc]initWithFrame: CGRectMake(0, 40,viewWidth, viewHeight)];
+        _pasterStageView.backgroundColor = [UIColor clearColor];
+//        _pasterStageView.backgroundColor = [[UIColor blackColor] colorWithAlphaComponent:0.5];
     }
-    return _pasterView;
+    return _pasterStageView;
 }
 - (void)switchAction:(UIButton *)sender{
 //    NSLog(@"转换摄像头");
@@ -258,7 +249,9 @@
 - (UIImage *)getImageFromView:(UIView *)theView
 {
     CGSize orgSize = theView.bounds.size ;
-    UIGraphicsBeginImageContextWithOptions(orgSize, YES, theView.layer.contentsScale * 2);
+//    UIGraphicsBeginImageContextWithOptions(orgSize, YES, theView.layer.contentsScale * 2);
+    UIGraphicsBeginImageContext(orgSize);
+
     [theView.layer renderInContext:UIGraphicsGetCurrentContext()]   ;
     UIImage *image = UIGraphicsGetImageFromCurrentImageContext()    ;
     UIGraphicsEndImageContext() ;
@@ -269,11 +262,17 @@
 - (UIImage *)complexImage:(UIImage *)soureceImg{
     CGFloat viewWidth = self.view.frame.size.width;
     CGFloat viewHeight = viewWidth / 480 * 640;
+    
     UIView *view = [[UIView alloc]initWithFrame:CGRectMake(0, 40, viewWidth, viewHeight)];
+    
     UIImageView *imageView = [[UIImageView alloc]initWithFrame:view.frame];
     imageView.image = soureceImg;
     [view addSubview:imageView];
-    [view addSubview:self.pasterView];
+    
+    UIImage *imagep = [self getImageFromView:self.pasterStageView];
+    UIImageView *imageViewp = [[UIImageView alloc]initWithFrame:view.frame];
+    imageViewp.image = imagep;
+    [view addSubview:imageViewp];
     return [self getImageFromView:view];
 }
 
@@ -349,5 +348,23 @@
 //}
 
 /** 切换前后摄像头 */
-
+- (void)layoutSubviews{
+    [_shotButton mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.centerX.mas_equalTo(self.view);
+        make.bottom.mas_equalTo(self.view).offset(-50);
+        make.width.height.mas_equalTo(80);
+    }];
+    
+    [_switchButton mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.centerY.mas_equalTo(self.view);
+        make.left.mas_equalTo(self.view).offset(15);
+        make.width.height.mas_equalTo(30);
+    }];
+    
+    [_lightButton mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.centerX.mas_equalTo(_switchButton);
+        make.bottom.mas_equalTo(_switchButton.mas_top).offset(-30);
+        make.width.height.mas_equalTo(30);
+    }];
+}
 @end
