@@ -7,6 +7,16 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		2151D4FB1FE0CD3700000BC6 /* CameraController.m in Sources */ = {isa = PBXBuildFile; fileRef = 2151D4FA1FE0CD3700000BC6 /* CameraController.m */; };
+		2151D5031FE0CFAE00000BC6 /* camera.png in Resources */ = {isa = PBXBuildFile; fileRef = 2151D4FD1FE0CFAE00000BC6 /* camera.png */; };
+		2151D5041FE0CFAE00000BC6 /* image1.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 2151D4FE1FE0CFAE00000BC6 /* image1.jpg */; };
+		2151D5051FE0CFAE00000BC6 /* image2.jpeg in Resources */ = {isa = PBXBuildFile; fileRef = 2151D4FF1FE0CFAE00000BC6 /* image2.jpeg */; };
+		2151D5061FE0CFAE00000BC6 /* lightOff.png in Resources */ = {isa = PBXBuildFile; fileRef = 2151D5001FE0CFAE00000BC6 /* lightOff.png */; };
+		2151D5071FE0CFAE00000BC6 /* lightOn.png in Resources */ = {isa = PBXBuildFile; fileRef = 2151D5011FE0CFAE00000BC6 /* lightOn.png */; };
+		2151D5081FE0CFAE00000BC6 /* switchCamera.png in Resources */ = {isa = PBXBuildFile; fileRef = 2151D5021FE0CFAE00000BC6 /* switchCamera.png */; };
+		2151D50B1FE0D21100000BC6 /* LGCameraImageView.m in Sources */ = {isa = PBXBuildFile; fileRef = 2151D5091FE0D21100000BC6 /* LGCameraImageView.m */; };
+		21A0AA3C1FE3538000A6A959 /* PasterStageView.m in Sources */ = {isa = PBXBuildFile; fileRef = 21A0AA3A1FE3538000A6A959 /* PasterStageView.m */; };
+		21A0AA3D1FE3538000A6A959 /* PasterView.m in Sources */ = {isa = PBXBuildFile; fileRef = 21A0AA3B1FE3538000A6A959 /* PasterView.m */; };
 		21A6093D1FDF692A004F9B83 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 21A6093C1FDF692A004F9B83 /* AppDelegate.m */; };
 		21A609401FDF692A004F9B83 /* ViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 21A6093F1FDF692A004F9B83 /* ViewController.m */; };
 		21A609431FDF692A004F9B83 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 21A609411FDF692A004F9B83 /* Main.storyboard */; };
@@ -15,6 +25,8 @@
 		21A6094B1FDF692A004F9B83 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 21A6094A1FDF692A004F9B83 /* main.m */; };
 		21A609551FDF692A004F9B83 /* tiezhiDemoTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 21A609541FDF692A004F9B83 /* tiezhiDemoTests.m */; };
 		21A609601FDF692A004F9B83 /* tiezhiDemoUITests.m in Sources */ = {isa = PBXBuildFile; fileRef = 21A6095F1FDF692A004F9B83 /* tiezhiDemoUITests.m */; };
+		21A609701FDF6C3A004F9B83 /* PasterImageController.m in Sources */ = {isa = PBXBuildFile; fileRef = 21A6096F1FDF6C3A004F9B83 /* PasterImageController.m */; };
+		7AFACE1C3D35DF3C014962A1 /* libPods-tiezhiDemo.a in Frameworks */ = {isa = PBXBuildFile; fileRef = B7AA6F27B76A6B33B25D3DAE /* libPods-tiezhiDemo.a */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -35,6 +47,20 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		2151D4F91FE0CD3700000BC6 /* CameraController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = CameraController.h; sourceTree = "<group>"; };
+		2151D4FA1FE0CD3700000BC6 /* CameraController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = CameraController.m; sourceTree = "<group>"; };
+		2151D4FD1FE0CFAE00000BC6 /* camera.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = camera.png; sourceTree = "<group>"; };
+		2151D4FE1FE0CFAE00000BC6 /* image1.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = image1.jpg; sourceTree = "<group>"; };
+		2151D4FF1FE0CFAE00000BC6 /* image2.jpeg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = image2.jpeg; sourceTree = "<group>"; };
+		2151D5001FE0CFAE00000BC6 /* lightOff.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = lightOff.png; sourceTree = "<group>"; };
+		2151D5011FE0CFAE00000BC6 /* lightOn.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = lightOn.png; sourceTree = "<group>"; };
+		2151D5021FE0CFAE00000BC6 /* switchCamera.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = switchCamera.png; sourceTree = "<group>"; };
+		2151D5091FE0D21100000BC6 /* LGCameraImageView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LGCameraImageView.m; sourceTree = "<group>"; };
+		2151D50A1FE0D21100000BC6 /* LGCameraImageView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LGCameraImageView.h; sourceTree = "<group>"; };
+		21A0AA381FE3538000A6A959 /* PasterStageView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PasterStageView.h; sourceTree = "<group>"; };
+		21A0AA391FE3538000A6A959 /* PasterView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PasterView.h; sourceTree = "<group>"; };
+		21A0AA3A1FE3538000A6A959 /* PasterStageView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PasterStageView.m; sourceTree = "<group>"; };
+		21A0AA3B1FE3538000A6A959 /* PasterView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PasterView.m; sourceTree = "<group>"; };
 		21A609381FDF692A004F9B83 /* tiezhiDemo.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = tiezhiDemo.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		21A6093B1FDF692A004F9B83 /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
 		21A6093C1FDF692A004F9B83 /* AppDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AppDelegate.m; sourceTree = "<group>"; };
@@ -51,6 +77,12 @@
 		21A6095B1FDF692A004F9B83 /* tiezhiDemoUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = tiezhiDemoUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		21A6095F1FDF692A004F9B83 /* tiezhiDemoUITests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = tiezhiDemoUITests.m; sourceTree = "<group>"; };
 		21A609611FDF692A004F9B83 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		21A6096E1FDF6C3A004F9B83 /* PasterImageController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = PasterImageController.h; sourceTree = "<group>"; };
+		21A6096F1FDF6C3A004F9B83 /* PasterImageController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = PasterImageController.m; sourceTree = "<group>"; };
+		21A609751FDF7791004F9B83 /* tiezhi.pch */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = tiezhi.pch; sourceTree = "<group>"; };
+		63014F295BE3CE96D2730D81 /* Pods-tiezhiDemo.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-tiezhiDemo.release.xcconfig"; path = "Pods/Target Support Files/Pods-tiezhiDemo/Pods-tiezhiDemo.release.xcconfig"; sourceTree = "<group>"; };
+		B7AA6F27B76A6B33B25D3DAE /* libPods-tiezhiDemo.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-tiezhiDemo.a"; sourceTree = BUILT_PRODUCTS_DIR; };
+		CFD3C5453006F8A4A0797868 /* Pods-tiezhiDemo.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-tiezhiDemo.debug.xcconfig"; path = "Pods/Target Support Files/Pods-tiezhiDemo/Pods-tiezhiDemo.debug.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -58,6 +90,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				7AFACE1C3D35DF3C014962A1 /* libPods-tiezhiDemo.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -78,6 +111,34 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		2151D4F81FE0CD1600000BC6 /* CameraShop */ = {
+			isa = PBXGroup;
+			children = (
+				21A0AA381FE3538000A6A959 /* PasterStageView.h */,
+				21A0AA3A1FE3538000A6A959 /* PasterStageView.m */,
+				21A0AA391FE3538000A6A959 /* PasterView.h */,
+				21A0AA3B1FE3538000A6A959 /* PasterView.m */,
+				2151D50A1FE0D21100000BC6 /* LGCameraImageView.h */,
+				2151D5091FE0D21100000BC6 /* LGCameraImageView.m */,
+				2151D4F91FE0CD3700000BC6 /* CameraController.h */,
+				2151D4FA1FE0CD3700000BC6 /* CameraController.m */,
+			);
+			path = CameraShop;
+			sourceTree = "<group>";
+		};
+		2151D4FC1FE0CFAE00000BC6 /* images */ = {
+			isa = PBXGroup;
+			children = (
+				2151D4FD1FE0CFAE00000BC6 /* camera.png */,
+				2151D4FE1FE0CFAE00000BC6 /* image1.jpg */,
+				2151D4FF1FE0CFAE00000BC6 /* image2.jpeg */,
+				2151D5001FE0CFAE00000BC6 /* lightOff.png */,
+				2151D5011FE0CFAE00000BC6 /* lightOn.png */,
+				2151D5021FE0CFAE00000BC6 /* switchCamera.png */,
+			);
+			path = images;
+			sourceTree = "<group>";
+		};
 		21A6092F1FDF692A004F9B83 = {
 			isa = PBXGroup;
 			children = (
@@ -85,6 +146,8 @@
 				21A609531FDF692A004F9B83 /* tiezhiDemoTests */,
 				21A6095E1FDF692A004F9B83 /* tiezhiDemoUITests */,
 				21A609391FDF692A004F9B83 /* Products */,
+				DDE099BD64F7AC67F789FA07 /* Pods */,
+				A0A641B6F9575F7009480B10 /* Frameworks */,
 			);
 			sourceTree = "<group>";
 		};
@@ -101,10 +164,14 @@
 		21A6093A1FDF692A004F9B83 /* tiezhiDemo */ = {
 			isa = PBXGroup;
 			children = (
+				2151D4FC1FE0CFAE00000BC6 /* images */,
+				2151D4F81FE0CD1600000BC6 /* CameraShop */,
+				21A6096D1FDF6C1C004F9B83 /* paster */,
 				21A6093B1FDF692A004F9B83 /* AppDelegate.h */,
 				21A6093C1FDF692A004F9B83 /* AppDelegate.m */,
 				21A6093E1FDF692A004F9B83 /* ViewController.h */,
 				21A6093F1FDF692A004F9B83 /* ViewController.m */,
+				21A609751FDF7791004F9B83 /* tiezhi.pch */,
 				21A609411FDF692A004F9B83 /* Main.storyboard */,
 				21A609441FDF692A004F9B83 /* Assets.xcassets */,
 				21A609461FDF692A004F9B83 /* LaunchScreen.storyboard */,
@@ -132,6 +199,32 @@
 			path = tiezhiDemoUITests;
 			sourceTree = "<group>";
 		};
+		21A6096D1FDF6C1C004F9B83 /* paster */ = {
+			isa = PBXGroup;
+			children = (
+				21A6096E1FDF6C3A004F9B83 /* PasterImageController.h */,
+				21A6096F1FDF6C3A004F9B83 /* PasterImageController.m */,
+			);
+			path = paster;
+			sourceTree = "<group>";
+		};
+		A0A641B6F9575F7009480B10 /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				B7AA6F27B76A6B33B25D3DAE /* libPods-tiezhiDemo.a */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		DDE099BD64F7AC67F789FA07 /* Pods */ = {
+			isa = PBXGroup;
+			children = (
+				CFD3C5453006F8A4A0797868 /* Pods-tiezhiDemo.debug.xcconfig */,
+				63014F295BE3CE96D2730D81 /* Pods-tiezhiDemo.release.xcconfig */,
+			);
+			name = Pods;
+			sourceTree = "<group>";
+		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
@@ -139,9 +232,12 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = 21A609641FDF692A004F9B83 /* Build configuration list for PBXNativeTarget "tiezhiDemo" */;
 			buildPhases = (
+				3104F2C7BCEF5DE25F88E77B /* [CP] Check Pods Manifest.lock */,
 				21A609341FDF692A004F9B83 /* Sources */,
 				21A609351FDF692A004F9B83 /* Frameworks */,
 				21A609361FDF692A004F9B83 /* Resources */,
+				8E299AB565CA1F2E27CBA68C /* [CP] Embed Pods Frameworks */,
+				6C4037009795302F77ACE3B4 /* [CP] Copy Pods Resources */,
 			);
 			buildRules = (
 			);
@@ -239,7 +335,13 @@
 			buildActionMask = 2147483647;
 			files = (
 				21A609481FDF692A004F9B83 /* LaunchScreen.storyboard in Resources */,
+				2151D5041FE0CFAE00000BC6 /* image1.jpg in Resources */,
+				2151D5051FE0CFAE00000BC6 /* image2.jpeg in Resources */,
+				2151D5071FE0CFAE00000BC6 /* lightOn.png in Resources */,
 				21A609451FDF692A004F9B83 /* Assets.xcassets in Resources */,
+				2151D5081FE0CFAE00000BC6 /* switchCamera.png in Resources */,
+				2151D5031FE0CFAE00000BC6 /* camera.png in Resources */,
+				2151D5061FE0CFAE00000BC6 /* lightOff.png in Resources */,
 				21A609431FDF692A004F9B83 /* Main.storyboard in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -260,14 +362,67 @@
 		};
 /* End PBXResourcesBuildPhase section */
 
+/* Begin PBXShellScriptBuildPhase section */
+		3104F2C7BCEF5DE25F88E77B /* [CP] Check Pods Manifest.lock */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "[CP] Check Pods Manifest.lock";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n";
+			showEnvVarsInLog = 0;
+		};
+		6C4037009795302F77ACE3B4 /* [CP] Copy Pods Resources */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "[CP] Copy Pods Resources";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-tiezhiDemo/Pods-tiezhiDemo-resources.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+		8E299AB565CA1F2E27CBA68C /* [CP] Embed Pods Frameworks */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "[CP] Embed Pods Frameworks";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-tiezhiDemo/Pods-tiezhiDemo-frameworks.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+/* End PBXShellScriptBuildPhase section */
+
 /* Begin PBXSourcesBuildPhase section */
 		21A609341FDF692A004F9B83 /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				2151D4FB1FE0CD3700000BC6 /* CameraController.m in Sources */,
+				21A0AA3D1FE3538000A6A959 /* PasterView.m in Sources */,
+				21A609701FDF6C3A004F9B83 /* PasterImageController.m in Sources */,
 				21A609401FDF692A004F9B83 /* ViewController.m in Sources */,
 				21A6094B1FDF692A004F9B83 /* main.m in Sources */,
+				2151D50B1FE0D21100000BC6 /* LGCameraImageView.m in Sources */,
 				21A6093D1FDF692A004F9B83 /* AppDelegate.m in Sources */,
+				21A0AA3C1FE3538000A6A959 /* PasterStageView.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -428,13 +583,15 @@
 		};
 		21A609651FDF692A004F9B83 /* Debug */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = CFD3C5453006F8A4A0797868 /* Pods-tiezhiDemo.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = L2QMMRR2HG;
+				GCC_PREFIX_HEADER = tiezhiDemo/tiezhi.pch;
 				INFOPLIST_FILE = tiezhiDemo/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
-				PRODUCT_BUNDLE_IDENTIFIER = com.wan.test.tiezhiDemo;
+				PRODUCT_BUNDLE_IDENTIFIER = com.wan.test4;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
@@ -442,13 +599,15 @@
 		};
 		21A609661FDF692A004F9B83 /* Release */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 63014F295BE3CE96D2730D81 /* Pods-tiezhiDemo.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = L2QMMRR2HG;
+				GCC_PREFIX_HEADER = tiezhiDemo/tiezhi.pch;
 				INFOPLIST_FILE = tiezhiDemo/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
-				PRODUCT_BUNDLE_IDENTIFIER = com.wan.test.tiezhiDemo;
+				PRODUCT_BUNDLE_IDENTIFIER = com.wan.test4;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};

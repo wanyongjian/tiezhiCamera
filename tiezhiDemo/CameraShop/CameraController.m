@@ -87,8 +87,8 @@
 //    [self.view.layer insertSublayer:self.previewLayer above:self.pasterStageView.layer];
     
     /** 放贴纸 */
-    PasterView *view = [[PasterView alloc]initWithFrame:CGRectMake(10, 10, 60, 60)];
-    [self.pasterStageView addSubview:view];
+//    PasterView *view = [[PasterView alloc]initWithFrame:CGRectMake(10, 10, 60, 60)];
+//    [self.pasterStageView addSubview:view];
     [self.view addSubview:self.pasterStageView];
 //    [self.view bringSubviewToFront:self.pasterStageView];
     /** 设备取景开始*/
@@ -234,6 +234,9 @@
              // Do something with the attachments.
          }
          
+         if (!imageSampleBuffer) {
+             return;
+         }
          // Continue as appropriate.
          NSData *imageData = [AVCaptureStillImageOutput jpegStillImageNSDataRepresentation:imageSampleBuffer];
          UIImage *t_image = [UIImage imageWithData:imageData];
@@ -263,7 +266,7 @@
     CGFloat viewWidth = self.view.frame.size.width;
     CGFloat viewHeight = viewWidth / 480 * 640;
     
-    UIView *view = [[UIView alloc]initWithFrame:CGRectMake(0, 40, viewWidth, viewHeight)];
+    UIView *view = [[UIView alloc]initWithFrame:CGRectMake(0, 0, viewWidth, viewHeight)];
     
     UIImageView *imageView = [[UIImageView alloc]initWithFrame:view.frame];
     imageView.image = soureceImg;
@@ -292,7 +295,7 @@
     //取出previewlayer位置图像：x像素开始开始，宽高3：4大小位置图像
     //x像素和这个self.preview.videoGravity = AVLayerVideoGravityResizeAspectFill
     //有关 x = (h-w*4/3)/2
-    CGRect rect = CGRectMake(((CGRectGetHeight(self.view.frame)-CGRectGetWidth(self.view.frame)*4/3.0)/2.0) * srcImg.size.height/CGRectGetHeight(self.view.frame) , 0, srcImg.size.width * 4/3, srcImg.size.width);
+    CGRect rect = CGRectMake(((CGRectGetHeight(self.view.frame)-CGRectGetWidth(self.view.frame)*4/3.0)/2.0) * srcImg.size.height/CGRectGetHeight(self.view.frame) , 0, srcImg.size.width * 4/3.0, srcImg.size.width);
     CGImageRef subImageRef = CGImageCreateWithImageInRect(srcImg.CGImage, rect);
     CGFloat subWidth = CGImageGetWidth(subImageRef);
     CGFloat subHeight = CGImageGetHeight(subImageRef);
