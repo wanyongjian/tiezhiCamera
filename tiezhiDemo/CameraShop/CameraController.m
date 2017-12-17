@@ -209,10 +209,8 @@
     return _settings;
 }
 /** 拍照拿到图片 */
+#pragma mark - 拍照
 - (void)shotAction:(UIButton *)sender{
-//    self.settings =[AVCapturePhotoSettings photoSettingsWithFormat:@{AVVideoCodecKey:AVVideoCodecTypeJPEG}];
-//    self.settings.flashMode = self.flashMode;
-//    [self.imageOutput capturePhotoWithSettings:self.settings delegate:self];
     AVCaptureConnection *videoConnection = nil;
     for (AVCaptureConnection *connection in self.captureOutput.connections) {
         for (AVCaptureInputPort *port in [connection inputPorts]) {
@@ -246,19 +244,14 @@
      }];
 }
 
-- (UIImage *)getImageFromView:(UIView *)theView
-{
-    CGSize orgSize = theView.bounds.size ;
-//    UIGraphicsBeginImageContextWithOptions(orgSize, YES, theView.layer.contentsScale * 2);
-    UIGraphicsBeginImageContext(orgSize);
-
-    [theView.layer renderInContext:UIGraphicsGetCurrentContext()]   ;
-    UIImage *image = UIGraphicsGetImageFromCurrentImageContext()    ;
-    UIGraphicsEndImageContext() ;
-
-    return image ;
+- (void)displayImage:(UIImage *)images {
+    LGCameraImageView *view = [[LGCameraImageView alloc] initWithFrame:self.view.frame];
+    //    view.delegate = self;
+    //    view.imageOrientation = _imageOrientation;
+    view.imageToDisplay = images;
+    [self.view addSubview:view];
+    
 }
-
 - (UIImage *)complexImage:(UIImage *)soureceImg{
     CGFloat viewWidth = self.view.frame.size.width;
     CGFloat viewHeight = viewWidth / 480 * 640;
@@ -275,15 +268,22 @@
     [view addSubview:imageViewp];
     return [self getImageFromView:view];
 }
+- (UIImage *)getImageFromView:(UIView *)theView
+{
+    CGSize orgSize = theView.bounds.size ;
+//    UIGraphicsBeginImageContextWithOptions(orgSize, YES, theView.layer.contentsScale * 2);
+    UIGraphicsBeginImageContext(orgSize);
 
-- (void)displayImage:(UIImage *)images {
-    LGCameraImageView *view = [[LGCameraImageView alloc] initWithFrame:self.view.frame];
-//    view.delegate = self;
-//    view.imageOrientation = _imageOrientation;
-    view.imageToDisplay = images;
-    [self.view addSubview:view];
-    
+    [theView.layer renderInContext:UIGraphicsGetCurrentContext()]   ;
+    UIImage *image = UIGraphicsGetImageFromCurrentImageContext()    ;
+    UIGraphicsEndImageContext() ;
+
+    return image ;
 }
+
+
+
+
 
 //裁剪image
 - (UIImage *)cutImage:(UIImage *)srcImg {
