@@ -10,8 +10,6 @@
  图片操作：贴图、裁剪
  */
 #import "PasterImageController.h"
-#define ScreenWidth [UIScreen mainScreen].bounds.size.width
-#define ScreenHeight [UIScreen mainScreen].bounds.size.height
 
 @interface PasterImageController ()
 
@@ -32,7 +30,7 @@
 
 
 ///**
-//    将UIView转成UIImage
+//    将UIView转成UIImage,这个方法导致分辨率降低，不适用！！！
 // */
 //- (UIImage *)getImageFromView:(UIView *)theView
 //{

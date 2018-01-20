@@ -1,13 +1,13 @@
 //
-//  PasterView.h
+//  AnimationView.h
 //  tiezhiDemo
 //
-//  Created by 万 on 2017/12/13.
+//  Created by 万 on 2017/12/19.
 //  Copyright © 2017年 wan. All rights reserved.
 //
 
 #import <UIKit/UIKit.h>
 
-@interface PasterView : UIView
+@interface AnimationView : UIView
 
 @end
