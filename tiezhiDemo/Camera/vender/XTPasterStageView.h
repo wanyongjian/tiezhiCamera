@@ -7,11 +7,8 @@
 //
 
 #import <UIKit/UIKit.h>
-typedef void(^customAction)(BOOL custom);
 @interface XTPasterStageView : UIView
 
-@property (nonatomic,copy)  customAction customActionBlock;
-@property (nonatomic,assign) BOOL bottomAlpha0; /** 区分是否在自定义paster*/
 @property (nonatomic,strong) UIImage *originImage ;
 @property (nonatomic,strong) NSMutableArray *pasterArray;
 

@@ -15,6 +15,11 @@
 		21A6094B1FDF692A004F9B83 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 21A6094A1FDF692A004F9B83 /* main.m */; };
 		21A609551FDF692A004F9B83 /* tiezhiDemoTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 21A609541FDF692A004F9B83 /* tiezhiDemoTests.m */; };
 		21A609601FDF692A004F9B83 /* tiezhiDemoUITests.m in Sources */ = {isa = PBXBuildFile; fileRef = 21A6095F1FDF692A004F9B83 /* tiezhiDemoUITests.m */; };
+		220AF2FE2018B1AA003FB5A6 /* pasterSelectView.m in Sources */ = {isa = PBXBuildFile; fileRef = 220AF2FD2018B1AA003FB5A6 /* pasterSelectView.m */; };
+		220AF3012018B1F4003FB5A6 /* pasterSelectCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 220AF3002018B1F4003FB5A6 /* pasterSelectCell.m */; };
+		221284C72014387E00EEDF73 /* PasterEditView.m in Sources */ = {isa = PBXBuildFile; fileRef = 221284C62014387E00EEDF73 /* PasterEditView.m */; };
+		221284CA2014393A00EEDF73 /* PasterItemView.m in Sources */ = {isa = PBXBuildFile; fileRef = 221284C92014393A00EEDF73 /* PasterItemView.m */; };
+		221284CE20160E3600EEDF73 /* CameraView.m in Sources */ = {isa = PBXBuildFile; fileRef = 221284CD20160E3600EEDF73 /* CameraView.m */; };
 		2217B7B42010E7E3008FF3BD /* UIImage+cut.m in Sources */ = {isa = PBXBuildFile; fileRef = 2217B7B32010E7E3008FF3BD /* UIImage+cut.m */; };
 		22521732201376E5002F0F1E /* CameraController.m in Sources */ = {isa = PBXBuildFile; fileRef = 22521723201376E4002F0F1E /* CameraController.m */; };
 		22521733201376E5002F0F1E /* XTPasterStageView.m in Sources */ = {isa = PBXBuildFile; fileRef = 22521726201376E4002F0F1E /* XTPasterStageView.m */; };
@@ -24,11 +29,9 @@
 		225217492013788B002F0F1E /* CustomPasterView.m in Sources */ = {isa = PBXBuildFile; fileRef = 225217482013788B002F0F1E /* CustomPasterView.m */; };
 		2252174C20137A67002F0F1E /* customPaterCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 2252174B20137A67002F0F1E /* customPaterCell.m */; };
 		22764EF41FE95DD8009BDEA1 /* AnimationView.m in Sources */ = {isa = PBXBuildFile; fileRef = 22764EF31FE95DD8009BDEA1 /* AnimationView.m */; };
-		22A345E81FE7EEA700F2472F /* PasterItemView.m in Sources */ = {isa = PBXBuildFile; fileRef = 22A345E71FE7EEA700F2472F /* PasterItemView.m */; };
 		22DADE2C20078F4D00635989 /* PasterImageController.m in Sources */ = {isa = PBXBuildFile; fileRef = 22DADE2920078F4D00635989 /* PasterImageController.m */; };
 		22DADE2F200B036A00635989 /* UIImage+AddFunction.m in Sources */ = {isa = PBXBuildFile; fileRef = 22DADE2E200B036A00635989 /* UIImage+AddFunction.m */; };
 		22DADE33200B2A1800635989 /* Image.bundle in Resources */ = {isa = PBXBuildFile; fileRef = 22DADE32200B2A1800635989 /* Image.bundle */; };
-		22DADE36200B699A00635989 /* PasterEditView.m in Sources */ = {isa = PBXBuildFile; fileRef = 22DADE35200B699A00635989 /* PasterEditView.m */; };
 		7AFACE1C3D35DF3C014962A1 /* libPods-tiezhiDemo.a in Frameworks */ = {isa = PBXBuildFile; fileRef = B7AA6F27B76A6B33B25D3DAE /* libPods-tiezhiDemo.a */; };
 /* End PBXBuildFile section */
 
@@ -67,6 +70,16 @@
 		21A6095F1FDF692A004F9B83 /* tiezhiDemoUITests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = tiezhiDemoUITests.m; sourceTree = "<group>"; };
 		21A609611FDF692A004F9B83 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		21A609751FDF7791004F9B83 /* tiezhi.pch */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = tiezhi.pch; sourceTree = "<group>"; };
+		220AF2FC2018B1AA003FB5A6 /* pasterSelectView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = pasterSelectView.h; sourceTree = "<group>"; };
+		220AF2FD2018B1AA003FB5A6 /* pasterSelectView.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = pasterSelectView.m; sourceTree = "<group>"; };
+		220AF2FF2018B1F4003FB5A6 /* pasterSelectCell.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = pasterSelectCell.h; sourceTree = "<group>"; };
+		220AF3002018B1F4003FB5A6 /* pasterSelectCell.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = pasterSelectCell.m; sourceTree = "<group>"; };
+		221284C52014387E00EEDF73 /* PasterEditView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PasterEditView.h; sourceTree = "<group>"; };
+		221284C62014387E00EEDF73 /* PasterEditView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PasterEditView.m; sourceTree = "<group>"; };
+		221284C82014393A00EEDF73 /* PasterItemView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PasterItemView.h; sourceTree = "<group>"; };
+		221284C92014393A00EEDF73 /* PasterItemView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PasterItemView.m; sourceTree = "<group>"; };
+		221284CC20160E3600EEDF73 /* CameraView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = CameraView.h; sourceTree = "<group>"; };
+		221284CD20160E3600EEDF73 /* CameraView.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = CameraView.m; sourceTree = "<group>"; };
 		2217B7B22010E7E3008FF3BD /* UIImage+cut.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "UIImage+cut.h"; sourceTree = "<group>"; };
 		2217B7B32010E7E3008FF3BD /* UIImage+cut.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = "UIImage+cut.m"; sourceTree = "<group>"; };
 		22521722201376E4002F0F1E /* CameraController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CameraController.h; sourceTree = "<group>"; };
@@ -85,15 +98,11 @@
 		2252174B20137A67002F0F1E /* customPaterCell.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = customPaterCell.m; sourceTree = "<group>"; };
 		22764EF21FE95DD8009BDEA1 /* AnimationView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AnimationView.h; sourceTree = "<group>"; };
 		22764EF31FE95DD8009BDEA1 /* AnimationView.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AnimationView.m; sourceTree = "<group>"; };
-		22A345E61FE7EEA700F2472F /* PasterItemView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = PasterItemView.h; sourceTree = "<group>"; };
-		22A345E71FE7EEA700F2472F /* PasterItemView.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = PasterItemView.m; sourceTree = "<group>"; };
 		22DADE2820078F4D00635989 /* PasterImageController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PasterImageController.h; sourceTree = "<group>"; };
 		22DADE2920078F4D00635989 /* PasterImageController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PasterImageController.m; sourceTree = "<group>"; };
 		22DADE2D200B036A00635989 /* UIImage+AddFunction.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIImage+AddFunction.h"; sourceTree = "<group>"; };
 		22DADE2E200B036A00635989 /* UIImage+AddFunction.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIImage+AddFunction.m"; sourceTree = "<group>"; };
 		22DADE32200B2A1800635989 /* Image.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; path = Image.bundle; sourceTree = "<group>"; };
-		22DADE34200B699A00635989 /* PasterEditView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = PasterEditView.h; sourceTree = "<group>"; };
-		22DADE35200B699A00635989 /* PasterEditView.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = PasterEditView.m; sourceTree = "<group>"; };
 		63014F295BE3CE96D2730D81 /* Pods-tiezhiDemo.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-tiezhiDemo.release.xcconfig"; path = "Pods/Target Support Files/Pods-tiezhiDemo/Pods-tiezhiDemo.release.xcconfig"; sourceTree = "<group>"; };
 		B7AA6F27B76A6B33B25D3DAE /* libPods-tiezhiDemo.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-tiezhiDemo.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		CFD3C5453006F8A4A0797868 /* Pods-tiezhiDemo.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-tiezhiDemo.debug.xcconfig"; path = "Pods/Target Support Files/Pods-tiezhiDemo/Pods-tiezhiDemo.debug.xcconfig"; sourceTree = "<group>"; };
@@ -188,6 +197,26 @@
 			path = tiezhiDemoUITests;
 			sourceTree = "<group>";
 		};
+		220AF2FB2018B17C003FB5A6 /* customPaster */ = {
+			isa = PBXGroup;
+			children = (
+				220AF2FC2018B1AA003FB5A6 /* pasterSelectView.h */,
+				220AF2FD2018B1AA003FB5A6 /* pasterSelectView.m */,
+				220AF2FF2018B1F4003FB5A6 /* pasterSelectCell.h */,
+				220AF3002018B1F4003FB5A6 /* pasterSelectCell.m */,
+			);
+			path = customPaster;
+			sourceTree = "<group>";
+		};
+		221284CB20160E1C00EEDF73 /* cameraview */ = {
+			isa = PBXGroup;
+			children = (
+				221284CC20160E3600EEDF73 /* CameraView.h */,
+				221284CD20160E3600EEDF73 /* CameraView.m */,
+			);
+			path = cameraview;
+			sourceTree = "<group>";
+		};
 		2217B7B12010E785008FF3BD /* Tools */ = {
 			isa = PBXGroup;
 			children = (
@@ -220,6 +249,10 @@
 		22521724201376E4002F0F1E /* vender */ = {
 			isa = PBXGroup;
 			children = (
+				221284C82014393A00EEDF73 /* PasterItemView.h */,
+				221284C92014393A00EEDF73 /* PasterItemView.m */,
+				221284C52014387E00EEDF73 /* PasterEditView.h */,
+				221284C62014387E00EEDF73 /* PasterEditView.m */,
 				22521725201376E4002F0F1E /* XTPasterStageView.h */,
 				22521726201376E4002F0F1E /* XTPasterStageView.m */,
 				22521727201376E4002F0F1E /* XTPasterView.h */,
@@ -238,6 +271,8 @@
 		2252173A20137849002F0F1E /* view */ = {
 			isa = PBXGroup;
 			children = (
+				220AF2FB2018B17C003FB5A6 /* customPaster */,
+				221284CB20160E1C00EEDF73 /* cameraview */,
 				2252173B20137849002F0F1E /* customPasterView */,
 				2252173C20137849002F0F1E /* editview */,
 				2252173F20137849002F0F1E /* saveview */,
@@ -277,8 +312,6 @@
 		22A345E51FE7EE7900F2472F /* view */ = {
 			isa = PBXGroup;
 			children = (
-				22A345E61FE7EEA700F2472F /* PasterItemView.h */,
-				22A345E71FE7EEA700F2472F /* PasterItemView.m */,
 				22764EF21FE95DD8009BDEA1 /* AnimationView.h */,
 				22764EF31FE95DD8009BDEA1 /* AnimationView.m */,
 			);
@@ -290,8 +323,6 @@
 			children = (
 				22DADE2D200B036A00635989 /* UIImage+AddFunction.h */,
 				22DADE2E200B036A00635989 /* UIImage+AddFunction.m */,
-				22DADE34200B699A00635989 /* PasterEditView.h */,
-				22DADE35200B699A00635989 /* PasterEditView.m */,
 			);
 			path = Paster;
 			sourceTree = "<group>";
@@ -508,21 +539,24 @@
 			buildActionMask = 2147483647;
 			files = (
 				22521732201376E5002F0F1E /* CameraController.m in Sources */,
-				22A345E81FE7EEA700F2472F /* PasterItemView.m in Sources */,
 				225217492013788B002F0F1E /* CustomPasterView.m in Sources */,
+				221284CE20160E3600EEDF73 /* CameraView.m in Sources */,
+				221284CA2014393A00EEDF73 /* PasterItemView.m in Sources */,
 				2252174C20137A67002F0F1E /* customPaterCell.m in Sources */,
 				21A609401FDF692A004F9B83 /* ViewController.m in Sources */,
 				22521734201376E5002F0F1E /* XTPasterView.m in Sources */,
+				220AF2FE2018B1AA003FB5A6 /* pasterSelectView.m in Sources */,
 				2252174320137849002F0F1E /* LGCameraImageView.m in Sources */,
 				22DADE2C20078F4D00635989 /* PasterImageController.m in Sources */,
 				22DADE2F200B036A00635989 /* UIImage+AddFunction.m in Sources */,
 				21A6094B1FDF692A004F9B83 /* main.m in Sources */,
 				22521733201376E5002F0F1E /* XTPasterStageView.m in Sources */,
+				221284C72014387E00EEDF73 /* PasterEditView.m in Sources */,
 				2252174220137849002F0F1E /* ImageEditView.m in Sources */,
+				220AF3012018B1F4003FB5A6 /* pasterSelectCell.m in Sources */,
 				21A6093D1FDF692A004F9B83 /* AppDelegate.m in Sources */,
 				22764EF41FE95DD8009BDEA1 /* AnimationView.m in Sources */,
 				2217B7B42010E7E3008FF3BD /* UIImage+cut.m in Sources */,
-				22DADE36200B699A00635989 /* PasterEditView.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

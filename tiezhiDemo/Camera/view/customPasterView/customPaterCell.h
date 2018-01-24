@@ -10,4 +10,6 @@
 
 @interface customPaterCell : UITableViewCell
 
+@property (nonatomic,strong) NSMutableArray *pasterArray;
+@property (nonatomic,copy) NSString *pathPrefix;
 @end

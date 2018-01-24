@@ -7,36 +7,26 @@
 //
 
 #import "CameraController.h"
-#import <AVFoundation/AVFoundation.h>
 #import "LGCameraImageView.h"
 #import "XTPasterStageView.h"
 #import "ImageEditView.h"
-#import "CustomPasterView.h"
+#import "CameraView.h"
+#import "pasterSelectView.h"
 
-
-@interface CameraController () <AVCapturePhotoCaptureDelegate>
-
-/** 捕获设备，通常是前置摄像头、后置摄像头、麦克风 */
-@property (nonatomic, strong) AVCaptureDevice *device;
-/** 输入设备，使用AVCaptureDevice来初始化 */
-@property (nonatomic, strong) AVCaptureDeviceInput *input;
-/** 输出图片 */
-@property (strong, nonatomic) AVCaptureStillImageOutput *captureOutput;
-/** 把输入输出结合到一起，并开始启动捕获设备 */
-@property (nonatomic, strong) AVCaptureSession *session;
-/** 图像预览层，实时显示捕获的图像 */
-@property (nonatomic, strong) AVCaptureVideoPreviewLayer *previewLayer;
-/** 摄像头方向*/
-@property (nonatomic, assign) AVCaptureDevicePosition position;
-@property (nonatomic, assign) AVCaptureFlashMode flashMode;
-@property (nonatomic, strong) AVCapturePhotoSettings *settings;
+static NSInteger Height = 65;
+@interface CameraController ()
 
 @property (nonatomic, strong) UIView *bottomView;
-@property (nonatomic, strong) CustomPasterView *customView;
+@property (nonatomic, strong) pasterSelectView *customView;
+
 @property (nonatomic, strong) UIButton *shotButton;
+@property (nonatomic,strong) UIButton *moreBtn;
+@property (nonatomic, strong) UIButton *downButton;
+
 @property (nonatomic, strong) UIButton *switchButton;
 @property (nonatomic, strong) UIButton *lightButton;
-
+@property (nonatomic,assign) BOOL bottomAlpha0; /** 区分是否在自定义paster*/
+@property (nonatomic, strong) CameraView *cameraView;
 /** 贴图 */
 @property (nonatomic, strong) XTPasterStageView *pasterStageView;
 
@@ -48,86 +38,28 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
  
-    [self cameraDistrict];
+    [self.view addSubview:self.cameraView];
+    [self.view addSubview:self.pasterStageView];
     [self.view addSubview:self.bottomView];
     [self.bottomView addSubview:self.shotButton];
-    [self.bottomView addSubview:self.customView];
+    [self.bottomView addSubview:self.moreBtn];
+    [self.view addSubview:self.customView];
+    [self.view addSubview:self.downButton];
     [self.view addSubview:self.switchButton];
     [self.view addSubview:self.lightButton];
     self.view.backgroundColor = RGB(0xffffff, 1);
+    self.bottomAlpha0 = NO;
+//    [self.cameraView start];
     [self layoutViews];
 }
 
-- (void)cameraDistrict{
-    //1.创建会话层
-    self.device = [AVCaptureDevice defaultDeviceWithMediaType:AVMediaTypeVideo];
-    //创建输入源
-    self.input = [[AVCaptureDeviceInput alloc]initWithDevice:self.device error:nil];
-    //创建图像输出
-    // Output
-    self.captureOutput = [[AVCaptureStillImageOutput alloc] init];
-    NSDictionary *outputSettings = [[NSDictionary alloc] initWithObjectsAndKeys:AVVideoCodecJPEG,AVVideoCodecKey,nil];
-    [self.captureOutput setOutputSettings:outputSettings];
-    
-    /** 创建会话*/
-    self.session = [[AVCaptureSession alloc]init];
-    self.session.sessionPreset = AVCaptureSessionPresetHigh;
-    //连接输入与会话
-    if ([self.session canAddInput:self.input]) {
-        [self.session addInput:self.input];
-    }
-    //连接输出与会话
-    if ([self.session canAddOutput:self.captureOutput]) {
-        [self.session addOutput:self.captureOutput];
-    }
-    /** 预览画面*/
-    CGFloat viewWidth = self.view.frame.size.width;
-    CGFloat viewHeight = viewWidth / 480 * 640;
 
-    self.previewLayer = [[AVCaptureVideoPreviewLayer alloc]initWithSession:self.session];
-    self.previewLayer.videoGravity = AVLayerVideoGravityResizeAspectFill;
-    self.previewLayer.frame = CGRectMake(0, 0,viewWidth, viewHeight);
-    [self.view.layer addSublayer:self.previewLayer];
-
-    [self.view addSubview:self.pasterStageView];
-    /** 设备取景开始*/
-    [self.session startRunning];
-}
 
 #pragma mark - 拍照
 - (void)shotAction:(UIButton *)sender{
-    AVCaptureConnection *videoConnection = nil;
-    for (AVCaptureConnection *connection in self.captureOutput.connections) {
-        for (AVCaptureInputPort *port in [connection inputPorts]) {
-            if ([[port mediaType] isEqual:AVMediaTypeVideo] ) {
-                videoConnection = connection;
-                break;
-            }
-        }
-        if (videoConnection) { break; }
-    }
-    
-    //get UIImage
-    [self.captureOutput captureStillImageAsynchronouslyFromConnection:videoConnection completionHandler:
-     ^(CMSampleBufferRef imageSampleBuffer, NSError *error) {
-         
-         CFDictionaryRef exifAttachments =
-         CMGetAttachment(imageSampleBuffer, kCGImagePropertyExifDictionary, NULL);
-         if (exifAttachments) {
-             // Do something with the attachments.
-         }
-         
-         if (!imageSampleBuffer) {
-             return;
-         }
-         // Continue as appropriate.
-         NSData *imageData = [AVCaptureStillImageOutput jpegStillImageNSDataRepresentation:imageSampleBuffer];
-         UIImage *t_image = [UIImage imageWithData:imageData];
-         // 调整方向、裁剪4：3
-         t_image = [UIImage getImage3x4:t_image];
-
-         [self displayImage:t_image];
-     }];
+    [self.cameraView shotImage:^(UIImage *image) {
+        [self displayImage:image];
+    }];
 }
 
 - (void)displayImage:(UIImage *)images {
@@ -139,6 +71,55 @@
 }
 
 #pragma mark - lazyload
+- (UIButton *)moreBtn{
+    if (!_moreBtn) {
+        _moreBtn = [UIButton buttonWithType:UIButtonTypeCustom];
+        _moreBtn.layer.masksToBounds = YES;
+        _moreBtn.layer.cornerRadius = Height/2;
+        _moreBtn.backgroundColor = [UIColor blackColor];
+        [_moreBtn addTarget:self action:@selector(moreAction:) forControlEvents:UIControlEventTouchUpInside];
+    }
+    return _moreBtn;
+}
+
+- (void)moreAction:(UIButton *)sender{
+    [UIView animateWithDuration:0.4 animations:^{
+        [self.customView mas_remakeConstraints:^(MASConstraintMaker *make) {
+            make.bottom.left.right.mas_equalTo(_bottomView);
+            make.top.mas_equalTo(_bottomView.mas_top).mas_offset(-Height);
+
+        }];
+        [self.view layoutIfNeeded];
+    }];
+    
+}
+
+- (UIButton *)downButton{
+    if (!_downButton) {
+        _downButton = [UIButton buttonWithType:UIButtonTypeCustom];
+        _downButton.layer.masksToBounds = YES;
+        _downButton.layer.cornerRadius = Height/2;
+        _downButton.backgroundColor = [UIColor whiteColor];
+        [_downButton addTarget:self action:@selector(downAction) forControlEvents:UIControlEventTouchUpInside];
+    }
+    return _downButton;
+}
+
+- (void)downAction{
+    [UIView animateWithDuration:0.4 animations:^{
+        [self.customView mas_remakeConstraints:^(MASConstraintMaker *make) {
+            make.bottom.left.right.mas_equalTo(_bottomView);
+            make.top.mas_equalTo(_bottomView.mas_bottom);
+        }];
+        [self.view layoutIfNeeded];
+    }];
+}
+- (CameraView *)cameraView{
+    if (!_cameraView) {
+        _cameraView = [[CameraView alloc]init];
+    }
+    return _cameraView;
+}
 - (UIView *)bottomView{
     if (!_bottomView) {
         _bottomView = [[UIView alloc]init];
@@ -146,9 +127,9 @@
     }
     return _bottomView;
 }
-- (CustomPasterView *)customView{
+- (pasterSelectView *)customView{
     if (!_customView) {
-        _customView = [[CustomPasterView alloc]init];
+        _customView = [[pasterSelectView alloc]init];
     }
     return _customView;
 }
@@ -179,162 +160,58 @@
     return _shotButton;
 }
 
-- (AVCaptureDevicePosition)position{
-    if (!_position) {
-        _position = AVCaptureDevicePositionBack;
-    }
-    return _position;
-}
+
 
 - (XTPasterStageView *)pasterStageView{
     if (!_pasterStageView) {
-        CGFloat viewWidth = self.view.frame.size.width;
-        CGFloat viewHeight = viewWidth / 480 * 640;
-        _pasterStageView = [[XTPasterStageView alloc]initWithFrame: CGRectMake(0, 0,viewWidth, viewHeight)];
-        _pasterStageView.backgroundColor = [UIColor clearColor];
         
-        WeakSelf;
-        _pasterStageView.customActionBlock = ^(BOOL custom) {
-            StrongSelf;
-            
-            if (custom) { // 自定义paster
-                [UIView animateWithDuration:0.3 delay:0 options:UIViewAnimationOptionCurveEaseIn animations:^{
-                    
-                    [strongSelf.customView mas_remakeConstraints:^(MASConstraintMaker *make) {
-                        make.top.mas_equalTo(strongSelf.bottomView);
-                        make.left.right.mas_equalTo(strongSelf.bottomView);
-                        make.bottom.mas_equalTo(strongSelf.bottomView);
-                    }];
-                    
-                    strongSelf.shotButton.alpha = 0;
-                    [strongSelf.shotButton mas_remakeConstraints:^(MASConstraintMaker *make) {
-                        make.centerX.mas_equalTo(strongSelf.bottomView);
-                        make.bottom.mas_equalTo(strongSelf.view.mas_bottom);
-                        make.width.height.mas_equalTo(80);
-                    }];
-                    [strongSelf.view layoutIfNeeded];
-                } completion:nil];
-                
-            }else{
-                [UIView animateWithDuration:0.3 delay:0 options:UIViewAnimationOptionCurveEaseIn animations:^{
-                    [strongSelf.customView mas_remakeConstraints:^(MASConstraintMaker *make) {
-                        make.top.mas_equalTo(strongSelf.bottomView);
-                        make.left.right.mas_equalTo(strongSelf.bottomView);
-                        make.bottom.mas_equalTo(strongSelf.bottomView.mas_top);
-                    }];
-                    
-                    strongSelf.shotButton.alpha = 1;
-                    [strongSelf.shotButton mas_remakeConstraints:^(MASConstraintMaker *make) {
-                        make.centerX.centerY.mas_equalTo(self.bottomView);
-                        make.width.height.mas_equalTo(80);
-                    }];
-                    
-                    [strongSelf.view layoutIfNeeded];
-                } completion:nil];
-                
-            }
-        };
+        _pasterStageView = [[XTPasterStageView alloc]initWithFrame: CGRectMake(0, 0,cameraWidth, cameraHeight)];
+        _pasterStageView.backgroundColor = [UIColor clearColor];
     }
     return _pasterStageView;
 }
 
 - (void)switchAction:(UIButton *)sender{
 //    NSLog(@"转换摄像头");
-    AVCaptureDevice *newDevice = nil;
-    AVCaptureDeviceInput *newInput = nil;
-    self.position = self.input.device.position;
-    if (self.position == AVCaptureDevicePositionBack) {
-        //        self.position = AVCaptureDevicePositionFront;
-        newDevice = [self cameraWithPosition:AVCaptureDevicePositionFront];
-    }else if (self.position == AVCaptureDevicePositionFront){
-        //        self.position = AVCaptureDevicePositionBack;
-        newDevice = [self cameraWithPosition:AVCaptureDevicePositionBack];
-    }
-    newInput = [AVCaptureDeviceInput deviceInputWithDevice:newDevice error:nil];
-    if (newInput) {
-        [self.session beginConfiguration];
-        [self.session removeInput:self.input];
-        if ([self.session canAddInput:newInput]) {
-            [self.session addInput:newInput];
-            self.input = newInput;
-        }else{
-            [self.session addInput:self.input];
-        }
-        [self.session commitConfiguration];
-    }
-    
-}
-/* 获取硬件*/
-- (AVCaptureDevice*)cameraWithPosition:(AVCaptureDevicePosition)position{
-    AVCaptureDeviceDiscoverySession *devices = [AVCaptureDeviceDiscoverySession discoverySessionWithDeviceTypes:@[AVCaptureDeviceTypeBuiltInWideAngleCamera] mediaType:AVMediaTypeVideo position:position];
-    
-    NSArray *devicesIOS  = devices.devices;
-    for (AVCaptureDevice *device in devicesIOS) {
-        if ([device position] == position) {
-            return device;
-        }
-    }
-    return nil;
+    [self.cameraView switchCam];
     
 }
 
 - (void)lightAction:(UIButton *)sender{
-    // 手电筒功能
-    //    /**修改前必须线锁定*/
-    //    [self.device lockForConfiguration:nil];
-    //    /** 必须判断是否有闪光灯，否则会闪退*/
-    //    if ([self.device hasFlash]) {
-    //
-    //        if (self.device.flashMode == AVCaptureFlashModeOn) {
-    //            self.lightButton.selected = NO;
-    //            self.device.flashMode = AVCaptureFlashModeOff;
-    //            self.device.torchMode = AVCaptureTorchModeOff;
-    //        }else if(self.device.flashMode == AVCaptureFlashModeOff){
-    //            self.lightButton.selected = YES;
-    //            self.device.flashMode = AVCaptureFlashModeOn;
-    //            self.device.torchMode = AVCaptureTorchModeOn;
-    //        }
-    //    }
-    //
-    //    [self.device unlockForConfiguration];
-    
-    //闪光灯功能
-    sender.selected = !sender.selected;
-    if (sender.selected == YES) {
-        self.flashMode = AVCaptureFlashModeOn;
-    }else{
-        self.flashMode = AVCaptureFlashModeOff;
-    }
-}
-
-- (AVCaptureFlashMode)flashMode{
-    if (!_flashMode) {
-        _flashMode = AVCaptureFlashModeOff;
-    }
-    return _flashMode;
-}
-
-- (AVCapturePhotoSettings *)settings{
-    if (!_settings) {
-        _settings =[AVCapturePhotoSettings photoSettingsWithFormat:@{AVVideoCodecKey:AVVideoCodecTypeJPEG}];
-        _settings.flashMode = AVCaptureFlashModeOff;
-    }
-    return _settings;
+    [self.cameraView light];
 }
 
 /** 切换前后摄像头 */
 - (void)layoutViews{
+    [_cameraView mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.left.top.right.mas_equalTo(self.view);
+        make.height.mas_offset(cameraHeight);
+    }];
+    
     [_bottomView mas_makeConstraints:^(MASConstraintMaker *make) {
         make.left.right.bottom.mas_equalTo(self.view);
         make.top.mas_equalTo(_pasterStageView.mas_bottom);
     }];
     [_customView mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.top.left.right.mas_equalTo(_bottomView);
-        make.bottom.mas_equalTo(_bottomView.mas_top);
+        make.left.right.mas_equalTo(_bottomView);
+        make.top.mas_equalTo(_bottomView.mas_bottom);
+        make.height.mas_equalTo(ScreenHeight-cameraHeight+65);
     }];
+    [_downButton mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.left.mas_equalTo(_customView.mas_left);
+        make.bottom.mas_equalTo(_customView.mas_top);
+        make.width.height.mas_equalTo(Height);
+    }];
+   
     [_shotButton mas_makeConstraints:^(MASConstraintMaker *make) {
         make.centerX.centerY.mas_equalTo(self.bottomView);
         make.width.height.mas_equalTo(80);
+    }];
+    
+    [_moreBtn mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.width.height.mas_equalTo(65);
+        make.centerX.mas_equalTo(self.bottomView).centerOffset(CGPointMake(-ScreenWidth/4-80/2/2, 0));
+        make.centerY.mas_equalTo(self.bottomView);
     }];
     
     [_switchButton mas_makeConstraints:^(MASConstraintMaker *make) {

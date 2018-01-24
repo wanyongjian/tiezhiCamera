@@ -8,6 +8,9 @@
 
 #import "CustomPasterView.h"
 #import "customPaterCell.h"
+@interface CustomPasterView ()
+@property (nonatomic,strong) NSMutableArray *pasterPathArray;
+@end
 
 @implementation CustomPasterView
 
@@ -19,11 +22,23 @@
         
         [self layoutViews];
         [self getPasterArray]; //素材分类
+        [self.tabelView reloadData];
     }
     return self;
 }
 
 - (void)getPasterArray{
+    NSString *str = [[[NSBundle mainBundle] resourcePath] stringByAppendingPathComponent:[NSString stringWithFormat:@"Image.bundle/pasterItem"]];
+    //文件夹名字数组
+    
+    NSArray *array = [[NSFileManager defaultManager] contentsOfDirectoryAtPath:str error:nil];
+    //每个文件夹路径数组
+    [self.pasterPathArray removeAllObjects];
+    for (NSUInteger i=0; i<array.count; i++) {
+        NSString *pasterItem = array[i];
+        NSString *pathStr = [str stringByAppendingPathComponent:pasterItem];
+        [self.pasterPathArray addObject:pathStr];
+    }
     
 }
 
@@ -37,11 +52,20 @@
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section{
-    return 5;
+    return self.pasterPathArray.count;
 }
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath{
     customPaterCell *cell = [tableView dequeueReusableCellWithIdentifier:@"customPaster"];
-    
+    if (self.pasterPathArray.count >0) {
+//        NSString *str = [[[NSBundle mainBundle] resourcePath] stringByAppendingPathComponent:[NSString stringWithFormat:@"Image.bundle/pasterItem"]];
+//        NSString *path = [str stringByAppendingPathComponent:self.pasterPathArray[indexPath.row]];
+//        cell.pathPrefix = path;
+        
+//        NSArray *array = [[NSFileManager defaultManager] contentsOfDirectoryAtPath:self.pasterPathArray[indexPath.row] error:nil];
+        cell.pathPrefix = self.pasterPathArray[indexPath.row];
+        
+        
+    }
     return cell;
 }
 
@@ -59,5 +83,12 @@
         _tabelView.delegate = self;
     }
     return _tabelView;
+}
+
+- (NSMutableArray *)pasterPathArray{
+    if (!_pasterPathArray) {
+        _pasterPathArray = @[].mutableCopy;
+    }
+    return _pasterPathArray;
 }
 @end

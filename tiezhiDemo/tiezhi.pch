@@ -19,6 +19,9 @@
 #define ScreenWidth MIN([UIScreen mainScreen].bounds.size.width, [UIScreen mainScreen].bounds.size.height)
 #define ScreenHeight MAX([UIScreen mainScreen].bounds.size.width, [UIScreen mainScreen].bounds.size.height)
 
+#define cameraWidth ScreenWidth
+#define cameraHeight ((cameraWidth/480) *640)
+
 #define Image_Paster(name) [UIImage imageWithContentsOfFile:[[[NSBundle mainBundle] resourcePath] stringByAppendingPathComponent:[NSString stringWithFormat:@"Image.bundle/images/%@",name]]]
 
 //#define RGB(r,g,b) [UIColor colorWithRed:r green:g blue:b alpha:1]

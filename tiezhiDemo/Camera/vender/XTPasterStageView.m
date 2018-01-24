@@ -15,7 +15,6 @@ static NSInteger ImgInset = 5;
 @interface XTPasterStageView ()
 
 @property (nonatomic,strong) UIScrollView *scrollView;
-@property (nonatomic,strong) UIButton *moreBtn;
 @property (nonatomic,strong) NSMutableArray *imgNameArray;
 @property (nonatomic,strong) UIButton       *bgButton ;
 @property (nonatomic,strong) UIImageView    *imgView ;
@@ -29,9 +28,8 @@ static NSInteger ImgInset = 5;
     if (self = [super initWithFrame:frame]){
         [self addSubview:self.imgView];
         [self addSubview:self.bgButton];
-        [self addSubview:self.moreBtn];
-        [self addSubview:self.scrollView];
-        self.bottomAlpha0 = NO;
+       
+//        [self addSubview:self.scrollView];
         [self layoutViews];
     }
     return self;
@@ -40,65 +38,16 @@ static NSInteger ImgInset = 5;
 
 - (void)layoutViews{
 
-    [_moreBtn mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.width.height.mas_equalTo(Height);
-        make.right.mas_equalTo(self).offset(-2);
-        make.bottom.mas_equalTo(self).offset(-5);
-    }];
     
     [_scrollView mas_makeConstraints:^(MASConstraintMaker *make) {
         make.height.mas_equalTo(Height);
         make.left.mas_equalTo(self).offset(2);
-        make.right.mas_equalTo(_moreBtn.mas_left).offset(-2);
+//        make.right.mas_equalTo(_moreBtn.mas_left).offset(-2);
         make.bottom.mas_equalTo(self).offset(-5);
     }];
 }
 
-- (UIButton *)moreBtn{
-    if (!_moreBtn) {
-        _moreBtn = [UIButton buttonWithType:UIButtonTypeCustom];
-        _moreBtn.layer.masksToBounds = YES;
-        _moreBtn.layer.cornerRadius = Height/2;
-        _moreBtn.backgroundColor = [[UIColor whiteColor]  colorWithAlphaComponent:0.4];
-        [_moreBtn addTarget:self action:@selector(moreAction:) forControlEvents:UIControlEventTouchUpInside];
-    }
-    return _moreBtn;
-}
 
-- (void)moreAction:(UIButton *)sender{
-    
-    if (self.bottomAlpha0) {
-        self.bottomAlpha0 = NO;
-        if (self.customActionBlock) {
-            self.customActionBlock(NO);
-        }
-        [UIView animateWithDuration:0.3 delay:0 options:UIViewAnimationOptionCurveEaseIn animations:^{
-            self.scrollView.alpha = 1;
-//            [self.scrollView mas_updateConstraints:^(MASConstraintMaker *make) {
-//                make.height.mas_equalTo(Height);
-//                make.left.mas_equalTo(self).offset(2);
-//                make.right.mas_equalTo(_moreBtn.mas_left).offset(-2);
-//                make.bottom.mas_equalTo(self).offset(-5);
-//            }];
-            [self layoutIfNeeded];
-        } completion:nil];
-    }else{
-        self.bottomAlpha0 = YES;
-        if (self.customActionBlock) {
-            self.customActionBlock(YES);
-        }
-        [UIView animateWithDuration:0.3 delay:0 options:UIViewAnimationOptionCurveEaseIn animations:^{
-            self.scrollView.alpha = 0;
-//            [self.scrollView mas_updateConstraints:^(MASConstraintMaker *make) {
-//                make.height.mas_equalTo(Height);
-//                make.left.mas_equalTo(self).offset(2);
-//                make.right.mas_equalTo(_moreBtn.mas_left).offset(-2);
-//                make.bottom.mas_equalTo(self).offset(-5+Height/2);
-//            }];
-            [self layoutIfNeeded];
-        } completion:nil];
-    }
-}
 - (UIScrollView *)scrollView{
     if (!_scrollView) {
         _scrollView = [[UIScrollView alloc]init];
