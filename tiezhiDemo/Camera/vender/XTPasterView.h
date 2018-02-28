@@ -20,11 +20,14 @@ typedef void(^removePaster)(int pasterID);
 @property (nonatomic,copy) firstResponder firstResponderBlock;
 @property (nonatomic,copy) removePaster removePasterBlock;
 @property (nonatomic,assign) CGFloat rotateAngel;
-@property (nonatomic,strong)    UIImage *imagePaster ;
-@property (nonatomic)           int     pasterID ;
-@property (nonatomic)           BOOL    onFirstResponder ;
+@property (nonatomic,strong) UIImage *imagePaster ;
+@property (nonatomic,assign) int     pasterID ;
+@property (nonatomic,assign) BOOL    onFirstResponder ;
+@property (nonatomic,copy) NSString *imgPath;
+@property (nonatomic,assign) pasterType pasterType;
+@property (nonatomic,strong) XTPasterStageView *stageView;
 
 - (void)AddToEditView:(PasterEditView *)editView;
-- (instancetype)initWithStageView:(XTPasterStageView *)bgView pasterID:(int)pasterID img:(UIImage *)img ;
+- (instancetype)initWithStageView:(XTPasterStageView *)bgView pasterID:(int)pasterID imgPath:(NSString *)path pasterType:(pasterType)type;
 - (void)remove ;
 @end

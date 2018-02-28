@@ -1,12 +1,21 @@
 PODS:
   - Masonry (1.1.0)
+  - SDCycleScrollView (1.75):
+    - SDWebImage (>= 4.0.0)
+  - SDWebImage (4.2.2):
+    - SDWebImage/Core (= 4.2.2)
+  - SDWebImage/Core (4.2.2)
 
 DEPENDENCIES:
   - Masonry
+  - SDCycleScrollView (~> 1.75)
+  - SDWebImage (~> 4.0)
 
 SPEC CHECKSUMS:
   Masonry: 678fab65091a9290e40e2832a55e7ab731aad201
+  SDCycleScrollView: 884b88f0266dd4708a0e1934975c69cb971707b1
+  SDWebImage: 89a9d32cd520bbb46eb14e541d5109b3564af198
 
-PODFILE CHECKSUM: 931e64a098959306b5ade92b9b9ae86b9412d0c9
+PODFILE CHECKSUM: 7a23b6d4d2946f95f39b022eb49cdc1e2efda4bf
 
-COCOAPODS: 1.2.1
+COCOAPODS: 1.4.0

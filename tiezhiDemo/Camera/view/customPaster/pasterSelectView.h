@@ -8,6 +8,8 @@
 
 #import <UIKit/UIKit.h>
 
+typedef  void(^pasterSelect)(NSString *path) ;
 @interface pasterSelectView : UIView
 
+@property (nonatomic,copy) pasterSelect pasterSelectBlock;
 @end

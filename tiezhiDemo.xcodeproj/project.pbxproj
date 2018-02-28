@@ -17,6 +17,7 @@
 		21A609601FDF692A004F9B83 /* tiezhiDemoUITests.m in Sources */ = {isa = PBXBuildFile; fileRef = 21A6095F1FDF692A004F9B83 /* tiezhiDemoUITests.m */; };
 		220AF2FE2018B1AA003FB5A6 /* pasterSelectView.m in Sources */ = {isa = PBXBuildFile; fileRef = 220AF2FD2018B1AA003FB5A6 /* pasterSelectView.m */; };
 		220AF3012018B1F4003FB5A6 /* pasterSelectCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 220AF3002018B1F4003FB5A6 /* pasterSelectCell.m */; };
+		220AF303201CABB7003FB5A6 /* macro.h in Sources */ = {isa = PBXBuildFile; fileRef = 220AF302201CABB7003FB5A6 /* macro.h */; };
 		221284C72014387E00EEDF73 /* PasterEditView.m in Sources */ = {isa = PBXBuildFile; fileRef = 221284C62014387E00EEDF73 /* PasterEditView.m */; };
 		221284CA2014393A00EEDF73 /* PasterItemView.m in Sources */ = {isa = PBXBuildFile; fileRef = 221284C92014393A00EEDF73 /* PasterItemView.m */; };
 		221284CE20160E3600EEDF73 /* CameraView.m in Sources */ = {isa = PBXBuildFile; fileRef = 221284CD20160E3600EEDF73 /* CameraView.m */; };
@@ -29,6 +30,8 @@
 		225217492013788B002F0F1E /* CustomPasterView.m in Sources */ = {isa = PBXBuildFile; fileRef = 225217482013788B002F0F1E /* CustomPasterView.m */; };
 		2252174C20137A67002F0F1E /* customPaterCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 2252174B20137A67002F0F1E /* customPaterCell.m */; };
 		22764EF41FE95DD8009BDEA1 /* AnimationView.m in Sources */ = {isa = PBXBuildFile; fileRef = 22764EF31FE95DD8009BDEA1 /* AnimationView.m */; };
+		22B07215203877470011DA1A /* SaveManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 22B07214203877470011DA1A /* SaveManager.m */; };
+		22B07219203883660011DA1A /* SavedImgController.m in Sources */ = {isa = PBXBuildFile; fileRef = 22B07218203883660011DA1A /* SavedImgController.m */; };
 		22DADE2C20078F4D00635989 /* PasterImageController.m in Sources */ = {isa = PBXBuildFile; fileRef = 22DADE2920078F4D00635989 /* PasterImageController.m */; };
 		22DADE2F200B036A00635989 /* UIImage+AddFunction.m in Sources */ = {isa = PBXBuildFile; fileRef = 22DADE2E200B036A00635989 /* UIImage+AddFunction.m */; };
 		22DADE33200B2A1800635989 /* Image.bundle in Resources */ = {isa = PBXBuildFile; fileRef = 22DADE32200B2A1800635989 /* Image.bundle */; };
@@ -74,6 +77,7 @@
 		220AF2FD2018B1AA003FB5A6 /* pasterSelectView.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = pasterSelectView.m; sourceTree = "<group>"; };
 		220AF2FF2018B1F4003FB5A6 /* pasterSelectCell.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = pasterSelectCell.h; sourceTree = "<group>"; };
 		220AF3002018B1F4003FB5A6 /* pasterSelectCell.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = pasterSelectCell.m; sourceTree = "<group>"; };
+		220AF302201CABB7003FB5A6 /* macro.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = macro.h; sourceTree = "<group>"; };
 		221284C52014387E00EEDF73 /* PasterEditView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PasterEditView.h; sourceTree = "<group>"; };
 		221284C62014387E00EEDF73 /* PasterEditView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PasterEditView.m; sourceTree = "<group>"; };
 		221284C82014393A00EEDF73 /* PasterItemView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PasterItemView.h; sourceTree = "<group>"; };
@@ -98,6 +102,10 @@
 		2252174B20137A67002F0F1E /* customPaterCell.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = customPaterCell.m; sourceTree = "<group>"; };
 		22764EF21FE95DD8009BDEA1 /* AnimationView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AnimationView.h; sourceTree = "<group>"; };
 		22764EF31FE95DD8009BDEA1 /* AnimationView.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AnimationView.m; sourceTree = "<group>"; };
+		22B07213203877470011DA1A /* SaveManager.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SaveManager.h; sourceTree = "<group>"; };
+		22B07214203877470011DA1A /* SaveManager.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = SaveManager.m; sourceTree = "<group>"; };
+		22B07217203883660011DA1A /* SavedImgController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SavedImgController.h; sourceTree = "<group>"; };
+		22B07218203883660011DA1A /* SavedImgController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = SavedImgController.m; sourceTree = "<group>"; };
 		22DADE2820078F4D00635989 /* PasterImageController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PasterImageController.h; sourceTree = "<group>"; };
 		22DADE2920078F4D00635989 /* PasterImageController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PasterImageController.m; sourceTree = "<group>"; };
 		22DADE2D200B036A00635989 /* UIImage+AddFunction.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIImage+AddFunction.h"; sourceTree = "<group>"; };
@@ -170,6 +178,7 @@
 				21A6093E1FDF692A004F9B83 /* ViewController.h */,
 				21A6093F1FDF692A004F9B83 /* ViewController.m */,
 				21A609751FDF7791004F9B83 /* tiezhi.pch */,
+				220AF302201CABB7003FB5A6 /* macro.h */,
 				21A609411FDF692A004F9B83 /* Main.storyboard */,
 				21A609441FDF692A004F9B83 /* Assets.xcassets */,
 				21A609461FDF692A004F9B83 /* LaunchScreen.storyboard */,
@@ -271,6 +280,7 @@
 		2252173A20137849002F0F1E /* view */ = {
 			isa = PBXGroup;
 			children = (
+				22B07216203882A60011DA1A /* savedImg */,
 				220AF2FB2018B17C003FB5A6 /* customPaster */,
 				221284CB20160E1C00EEDF73 /* cameraview */,
 				2252173B20137849002F0F1E /* customPasterView */,
@@ -316,6 +326,17 @@
 				22764EF31FE95DD8009BDEA1 /* AnimationView.m */,
 			);
 			path = view;
+			sourceTree = "<group>";
+		};
+		22B07216203882A60011DA1A /* savedImg */ = {
+			isa = PBXGroup;
+			children = (
+				22B07213203877470011DA1A /* SaveManager.h */,
+				22B07214203877470011DA1A /* SaveManager.m */,
+				22B07217203883660011DA1A /* SavedImgController.h */,
+				22B07218203883660011DA1A /* SavedImgController.m */,
+			);
+			path = savedImg;
 			sourceTree = "<group>";
 		};
 		22DADE2220078F4D00635989 /* Paster */ = {
@@ -492,13 +513,16 @@
 			files = (
 			);
 			inputPaths = (
+				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
+				"${PODS_ROOT}/Manifest.lock",
 			);
 			name = "[CP] Check Pods Manifest.lock";
 			outputPaths = (
+				"$(DERIVED_FILE_DIR)/Pods-tiezhiDemo-checkManifestLockResult.txt",
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n";
+			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
 			showEnvVarsInLog = 0;
 		};
 		6C4037009795302F77ACE3B4 /* [CP] Copy Pods Resources */ = {
@@ -542,10 +566,12 @@
 				225217492013788B002F0F1E /* CustomPasterView.m in Sources */,
 				221284CE20160E3600EEDF73 /* CameraView.m in Sources */,
 				221284CA2014393A00EEDF73 /* PasterItemView.m in Sources */,
+				220AF303201CABB7003FB5A6 /* macro.h in Sources */,
 				2252174C20137A67002F0F1E /* customPaterCell.m in Sources */,
 				21A609401FDF692A004F9B83 /* ViewController.m in Sources */,
 				22521734201376E5002F0F1E /* XTPasterView.m in Sources */,
 				220AF2FE2018B1AA003FB5A6 /* pasterSelectView.m in Sources */,
+				22B07219203883660011DA1A /* SavedImgController.m in Sources */,
 				2252174320137849002F0F1E /* LGCameraImageView.m in Sources */,
 				22DADE2C20078F4D00635989 /* PasterImageController.m in Sources */,
 				22DADE2F200B036A00635989 /* UIImage+AddFunction.m in Sources */,
@@ -553,6 +579,7 @@
 				22521733201376E5002F0F1E /* XTPasterStageView.m in Sources */,
 				221284C72014387E00EEDF73 /* PasterEditView.m in Sources */,
 				2252174220137849002F0F1E /* ImageEditView.m in Sources */,
+				22B07215203877470011DA1A /* SaveManager.m in Sources */,
 				220AF3012018B1F4003FB5A6 /* pasterSelectCell.m in Sources */,
 				21A6093D1FDF692A004F9B83 /* AppDelegate.m in Sources */,
 				22764EF41FE95DD8009BDEA1 /* AnimationView.m in Sources */,
@@ -720,13 +747,17 @@
 			baseConfigurationReference = CFD3C5453006F8A4A0797868 /* Pods-tiezhiDemo.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				CODE_SIGN_STYLE = Automatic;
-				DEVELOPMENT_TEAM = L2QMMRR2HG;
+				DEVELOPMENT_TEAM = GN2K929UC4;
 				GCC_PREFIX_HEADER = tiezhiDemo/tiezhi.pch;
 				INFOPLIST_FILE = tiezhiDemo/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
-				PRODUCT_BUNDLE_IDENTIFIER = com.wan.test123;
+				PRODUCT_BUNDLE_IDENTIFIER = com.wan.paster;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE = "";
+				PROVISIONING_PROFILE_SPECIFIER = "";
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
 			name = Debug;
@@ -736,13 +767,17 @@
 			baseConfigurationReference = 63014F295BE3CE96D2730D81 /* Pods-tiezhiDemo.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				CODE_SIGN_STYLE = Automatic;
-				DEVELOPMENT_TEAM = L2QMMRR2HG;
+				DEVELOPMENT_TEAM = GN2K929UC4;
 				GCC_PREFIX_HEADER = tiezhiDemo/tiezhi.pch;
 				INFOPLIST_FILE = tiezhiDemo/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
-				PRODUCT_BUNDLE_IDENTIFIER = com.wan.test123;
+				PRODUCT_BUNDLE_IDENTIFIER = com.wan.paster;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE = "";
+				PROVISIONING_PROFILE_SPECIFIER = "";
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
 			name = Release;

@@ -10,6 +10,8 @@
 #import "ViewController.h"
 #import "PasterImageController.h"
 #import "CameraController.h"
+#import <AVFoundation/AVCaptureDevice.h>
+#import <AVFoundation/AVMediaFormat.h>
 
 @interface AppDelegate ()
 
@@ -23,8 +25,18 @@
     self.window = [[UIWindow alloc]initWithFrame:[UIScreen mainScreen].bounds];
     self.window.backgroundColor = [UIColor whiteColor];
 //    self.window.rootViewController = [[ViewController alloc]init];
+//    UINavigationController *con = [[UINavigationController alloc]initWithRootViewController:[[CameraController alloc]init]];
     self.window.rootViewController = [[CameraController alloc]init];
     [self.window makeKeyAndVisible];
+    
+    AVAuthorizationStatus authStatus = [AVCaptureDevice authorizationStatusForMediaType:AVMediaTypeVideo];
+    if (authStatus == AVAuthorizationStatusRestricted || authStatus ==AVAuthorizationStatusDenied){
+        //无权限 做一个友好的提示
+        UIAlertView * alart = [[UIAlertView alloc]initWithTitle:@"kindly reminder" message:@"Please allow APP to access your camera -> Settings -> privacy -> camera." delegate:self cancelButtonTitle:@"confirm" otherButtonTitles:nil, nil]; [alart show];
+    } else {
+        //调用相机的代码写在这里
+    }
+    
     
     return YES;
 }

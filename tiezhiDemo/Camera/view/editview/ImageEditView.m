@@ -10,7 +10,9 @@
 #import "XTPasterView.h"
 
 @interface ImageEditView()
+@property (nonatomic,strong) UIView *bottomView;
 @property (nonatomic,strong) UIButton *cancelBtn;
+@property (nonatomic,strong) UIButton *editBtn;
 @property (nonatomic,strong) UIButton *saveBtn;
 @end
 
@@ -19,113 +21,121 @@
 - (instancetype)initWithFrame:(CGRect)frame{
     if (self = [super initWithFrame:frame]) {
         [self addSubview:self.editView];
-        [self addSubview:self.cancelBtn];
-        [self addSubview:self.saveBtn];
+        [self addSubview:self.bottomView];
+        [self.bottomView addSubview:self.cancelBtn];
+        [self.bottomView addSubview:self.editBtn];
+        [self.bottomView addSubview:self.saveBtn];
         [self layoutViews];
-        self.backgroundColor = [UIColor blueColor];
+        self.backgroundColor = [UIColor whiteColor];
+        
+        dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.1 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+            [self animation];
+        });
     }
     return self;
 }
 
-- (void)layoutViews{
-    [_cancelBtn mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.centerX.mas_equalTo(self);
-        make.bottom.mas_equalTo(self).offset(-20);
-        make.width.height.mas_equalTo(60);
-    }];
-    [_saveBtn mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.top.mas_equalTo(_cancelBtn.mas_top);
-        make.left.mas_equalTo(_cancelBtn.mas_right).offset(60);
-        make.width.height.mas_equalTo(60);
-    }];
-}
-
-- (PasterEditView *)editView{
-    if (!_editView) {
-        CGFloat viewWidth = ScreenWidth;
-        CGFloat viewHeight = viewWidth / 480 * 640;
-        _editView = [[PasterEditView alloc]initWithFrame:CGRectMake(0, 0, viewWidth, viewHeight)];
-    }
-    return _editView;
-}
-- (UIButton *)cancelBtn{
-    if (!_cancelBtn) {
-        _cancelBtn = [UIButton buttonWithType:UIButtonTypeCustom];
-        [_cancelBtn setTitle:@"重拍" forState:UIControlStateNormal];
-        [_cancelBtn setTitleColor:[UIColor blackColor] forState:UIControlStateNormal];
-        [_cancelBtn addTarget:self action:@selector(cancelAction) forControlEvents:UIControlEventTouchUpInside];
-    }
-    return _cancelBtn;
-}
-
-- (UIButton *)saveBtn{
-    if (!_saveBtn) {
-        _saveBtn = [UIButton buttonWithType:UIButtonTypeCustom];
-        [_saveBtn setTitle:@"保存" forState:UIControlStateNormal];
-        [_saveBtn setTitleColor:[UIColor blackColor] forState:UIControlStateNormal];
-        [_saveBtn addTarget:self action:@selector(saveAction) forControlEvents:UIControlEventTouchUpInside];
-    }
-    return _saveBtn;
-}
-
 - (void)saveAction{
-    UIImageView *img = [[UIImageView alloc]initWithFrame:CGRectMake(0, 0, ScreenWidth, ScreenWidth*4/3)];
-    UIImage *soureceImg = self.editView.sourceImg;
-    for (NSInteger i=0; i<self.editView.pasterArray.count; i++) {
-        soureceImg = [self addPasterToImg:soureceImg paster:self.editView.pasterArray[i]];
+    [self removeFromSuperview];
+    
+    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT,0),^{
+        //子线程下载图片
+        //    UIImageView *img = [[UIImageView alloc]initWithFrame:CGRectMake(0, 0, ScreenWidth, ScreenWidth*4/3)];
+        
+        //回到主线程设置图片，更新UI界面
+        dispatch_async(dispatch_get_main_queue(),^{
+            UIImage *sourceImg = self.editView.sourceImg;
+            
+            NSArray *pasterArray = [self.editView.pasterArray sortedArrayUsingComparator:^NSComparisonResult(XTPasterView* obj1, XTPasterView* obj2) {
+                if(obj1.layer.zPosition < obj2.layer.zPosition)
+                    return NSOrderedAscending;
+                return NSOrderedDescending;
+            }];
+            
+            //            soureceImg = [self addPasterToImg:soureceImg pasterArray:(NSArray<XTPasterView *> *)pasterArray];
+            //            [self saveImage:soureceImg];
+            
+            
+            NSMutableArray *imgArray = [@[] mutableCopy];
+            for(NSInteger i=0;i<pasterArray.count;i++){
+                XTPasterView *pasterView = pasterArray[i];
+                UIImage *pasterImg = pasterView.imagePaster;
+                CGSize imgSize = CGSizeMake(pasterImg.size.width, pasterImg.size.height);
+                // 新方形图片宽高
+                CGFloat contextWidth = sqrt((pasterImg.size.width*pasterImg.size.width)+(pasterImg.size.height*pasterImg.size.height));
+                CGSize contextSize = CGSizeMake(contextWidth,contextWidth);
+                //    CGSize contextSize = CGSizeMake(imgSize.width,imgSize.height);
+                CGFloat contextOffsetX = (contextWidth-pasterImg.size.width)/2;
+                CGFloat contextOffsetY = (contextWidth-pasterImg.size.height)/2;
+                
+                @autoreleasepool{
+                    UIGraphicsBeginImageContext(contextSize);
+                    CGContextRef context = UIGraphicsGetCurrentContext();
+                    CGContextTranslateCTM(context, contextSize.width / 2, contextSize.height / 2);
+                    CGContextRotateCTM(context, pasterView.rotateAngel);
+                    CGContextTranslateCTM(context, -contextSize.width / 2, -contextSize.height / 2);
+                    
+                    [pasterImg drawInRect:CGRectMake(contextOffsetX, contextOffsetY, imgSize.width, imgSize.height)];
+                    //    [pasterImg drawInRect:CGRectMake(0, 0, imgSize.width, imgSize.height)];
+                    UIImage *newPasterImage = UIGraphicsGetImageFromCurrentImageContext();
+                    UIGraphicsEndImageContext();
+                    
+                    [imgArray addObject:newPasterImage];
+                    newPasterImage = nil;
+                }
+            }
+            
+            @autoreleasepool{
+                //再把贴纸画到原图片上
+                //2.开启上下文
+                UIGraphicsBeginImageContextWithOptions(sourceImg.size, NO, 0);
+                //3.绘制背景图片
+                [sourceImg drawInRect:CGRectMake(0, 0, sourceImg.size.width, sourceImg.size.height)];
+                //绘制水印图片到当前上下文
+                for (NSInteger i=0; i<pasterArray.count; i++) {
+                    XTPasterView *pasterView = pasterArray[i];
+                    CGPoint imgCenter = pasterView.center;
+                    CGFloat imgWidth = pasterView.bounds.size.width-15*2;
+                    CGFloat imgHeight = pasterView.bounds.size.height-15*2;
+                    
+                    CGPoint imgPixelCenter = CGPointMake(imgCenter.x*sourceImg.size.width/self.editView.frame.size.width, imgCenter.y*sourceImg.size.height/self.editView.frame.size.height);
+                    CGFloat imgPixelWidth = imgWidth*sourceImg.size.width/self.editView.frame.size.width;
+                    CGFloat imgPixelHeight = imgHeight*sourceImg.size.height/self.editView.frame.size.height;
+                    
+                    CGFloat newImgPixelWidth = sqrt(imgPixelWidth*imgPixelWidth + imgPixelHeight*imgPixelHeight);
+                    
+                    CGRect newRect = CGRectMake(imgPixelCenter.x-newImgPixelWidth/2, imgPixelCenter.y-newImgPixelWidth/2, newImgPixelWidth, newImgPixelWidth);
+                    
+                    [imgArray[i] drawInRect:newRect];
+                }
+                
+                //4.从上下文中获取新图片
+                UIImage * newImage = UIGraphicsGetImageFromCurrentImageContext();
+                //5.关闭图形上下文
+                UIGraphicsEndImageContext();
+                [self saveImage:newImage];
+                newImage = nil;
+            }
+        });
+    });
+}
+
+- (void)saveImage:(UIImage *)image
+{
+    UIImageWriteToSavedPhotosAlbum(image, self, @selector(image:didFinishSavingWithError:contextInfo:), (__bridge void *)self);
+}
+
+- (void)image:(UIImage *)image didFinishSavingWithError:(NSError *)error contextInfo:(void *)contextInfo
+{
+    [SaveManager sharedManager].currentImage = image;
+    if (self.saveImgBlock) {
+        self.saveImgBlock(image);
+        image = nil;
     }
-    img.image = soureceImg;
-    [self addSubview:img];
+//    NSLog(@"image = %@, error = %@, contextInfo = %@", image, error, contextInfo);
 }
 
-- (UIImage *)addPasterToImg:(UIImage *)sourceImg paster:(XTPasterView *)pasterView{
-    // 先旋转贴纸
-    UIImage *pasterImg = pasterView.imagePaster;
-    CGSize imgSize = CGSizeMake(pasterImg.size.width, pasterImg.size.height);
-    // 新方形图片宽高
-    CGFloat contextWidth = sqrt((pasterImg.size.width*pasterImg.size.width)+(pasterImg.size.height*pasterImg.size.height));
-    CGSize contextSize = CGSizeMake(contextWidth,contextWidth);
-//    CGSize contextSize = CGSizeMake(imgSize.width,imgSize.height);
-    CGFloat contextOffsetX = (contextWidth-pasterImg.size.width)/2;
-    CGFloat contextOffsetY = (contextWidth-pasterImg.size.height)/2;
 
-    UIGraphicsBeginImageContext(contextSize);
-    CGContextRef context = UIGraphicsGetCurrentContext();
-    CGContextTranslateCTM(context, contextSize.width / 2, contextSize.height / 2);
-    CGContextRotateCTM(context, pasterView.rotateAngel);
-    CGContextTranslateCTM(context, -contextSize.width / 2, -contextSize.height / 2);
-
-    [pasterImg drawInRect:CGRectMake(contextOffsetX, contextOffsetY, imgSize.width, imgSize.height)];
-//    [pasterImg drawInRect:CGRectMake(0, 0, imgSize.width, imgSize.height)];
-    UIImage *newPasterImage = UIGraphicsGetImageFromCurrentImageContext();
-    UIGraphicsEndImageContext();
-
-    //再把贴纸画到原图片上
-    //2.开启上下文
-    UIGraphicsBeginImageContextWithOptions(sourceImg.size, NO, 0);
-    //3.绘制背景图片
-    [sourceImg drawInRect:CGRectMake(0, 0, sourceImg.size.width, sourceImg.size.height)];
-    //绘制水印图片到当前上下文
-    CGPoint imgCenter = pasterView.center;
-    CGFloat imgWidth = pasterView.bounds.size.width-15*2;
-    CGFloat imgHeight = pasterView.bounds.size.height-15*2;
-
-    CGPoint imgPixelCenter = CGPointMake(imgCenter.x*sourceImg.size.width/self.editView.frame.size.width, imgCenter.y*sourceImg.size.height/self.editView.frame.size.height);
-    CGFloat imgPixelWidth = imgWidth*sourceImg.size.width/self.editView.frame.size.width;
-    CGFloat imgPixelHeight = imgHeight*sourceImg.size.height/self.editView.frame.size.height;
-
-    CGFloat newImgPixelWidth = sqrt(imgPixelWidth*imgPixelWidth + imgPixelHeight*imgPixelHeight);
-
-    CGRect newRect = CGRectMake(imgPixelCenter.x-newImgPixelWidth/2, imgPixelCenter.y-newImgPixelWidth/2, newImgPixelWidth, newImgPixelWidth);
-
-    [newPasterImage drawInRect:newRect];
-    //4.从上下文中获取新图片
-    UIImage * newImage = UIGraphicsGetImageFromCurrentImageContext();
-    //5.关闭图形上下文
-    UIGraphicsEndImageContext();
-
-    return newImage;
-}
 
 
 - (UIImage *)imageWithPaster:(XTPasterView *)pasterView{
@@ -186,5 +196,95 @@
 }
 - (void)cancelAction{
     [self removeFromSuperview];
+}
+
+- (void)layoutViews{
+    [_bottomView mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.left.right.bottom.mas_equalTo(self);
+        make.top.mas_equalTo(_editView.mas_bottom);
+    }];
+    
+    [_editBtn mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.center.mas_equalTo(_bottomView);
+        make.width.height.mas_equalTo(75);
+    }];
+    
+    [_cancelBtn mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.center.mas_equalTo(_bottomView);
+        make.width.height.mas_equalTo(75);
+    }];
+    
+    [_saveBtn mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.center.mas_equalTo(_bottomView);
+        make.width.height.mas_equalTo(75);
+    }];
+}
+- (UIView *)bottomView{
+    if (!_bottomView) {
+        _bottomView = [[UIView alloc]init];
+    }
+    return _bottomView;
+}
+- (PasterEditView *)editView{
+    if (!_editView) {
+        CGFloat viewWidth = ScreenWidth;
+        CGFloat viewHeight = viewWidth / 480 * 640;
+        _editView = [[PasterEditView alloc]initWithFrame:CGRectMake(0, 0, viewWidth, viewHeight)];
+    }
+    return _editView;
+}
+- (UIButton *)editBtn{
+    if (!_editBtn) {
+        _editBtn = [UIButton buttonWithType:UIButtonTypeCustom];
+        [_editBtn setBackgroundImage:Image_Paster(@"edit") forState:UIControlStateNormal];
+        [_editBtn addTarget:self action:@selector(editAction) forControlEvents:UIControlEventTouchUpInside];
+    }
+    return _editBtn;
+}
+- (UIButton *)cancelBtn{
+    if (!_cancelBtn) {
+        _cancelBtn = [UIButton buttonWithType:UIButtonTypeCustom];
+        [_cancelBtn setBackgroundImage:Image_Paster(@"cancel") forState:UIControlStateNormal];
+        [_cancelBtn addTarget:self action:@selector(cancelAction) forControlEvents:UIControlEventTouchUpInside];
+    }
+    return _cancelBtn;
+}
+
+- (UIButton *)saveBtn{
+    if (!_saveBtn) {
+        _saveBtn = [UIButton buttonWithType:UIButtonTypeCustom];
+        [_saveBtn setBackgroundImage:Image_Paster(@"confirm") forState:UIControlStateNormal];
+        [_saveBtn addTarget:self action:@selector(saveAction) forControlEvents:UIControlEventTouchUpInside];
+    }
+    return _saveBtn;
+}
+
+- (void)animation{
+    [UIView animateWithDuration:0.3 animations:^{
+        
+        [_cancelBtn mas_remakeConstraints:^(MASConstraintMaker *make) {
+            make.center.mas_equalTo(_editBtn).centerOffset(CGPointMake(-KWidthPro(225), 0));
+            make.width.height.mas_equalTo(75);
+        }];
+        
+        [_saveBtn mas_remakeConstraints:^(MASConstraintMaker *make) {
+            make.center.mas_equalTo(_editBtn).centerOffset(CGPointMake(KWidthPro(225), 0));
+            make.width.height.mas_equalTo(75);
+        }];
+        [self layoutIfNeeded];
+    }];
+}
+
+- (void)editAction{
+    if (self.editView.pasterArray.count > 0) {
+        NSArray *pasterArray = [self.editView.pasterArray sortedArrayUsingComparator:^NSComparisonResult(XTPasterView* obj1, XTPasterView* obj2) {
+            if(obj1.layer.zPosition < obj2.layer.zPosition)
+                return NSOrderedAscending;
+            return NSOrderedDescending;
+        }];
+        
+        XTPasterView *view = [pasterArray lastObject];
+        view.onFirstResponder = YES;
+    }
 }
 @end

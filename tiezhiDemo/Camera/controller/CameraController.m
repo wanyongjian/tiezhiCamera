@@ -12,6 +12,7 @@
 #import "ImageEditView.h"
 #import "CameraView.h"
 #import "pasterSelectView.h"
+#import "SavedImgController.h"
 
 static NSInteger Height = 65;
 @interface CameraController ()
@@ -20,8 +21,9 @@ static NSInteger Height = 65;
 @property (nonatomic, strong) pasterSelectView *customView;
 
 @property (nonatomic, strong) UIButton *shotButton;
-@property (nonatomic,strong) UIButton *moreBtn;
+@property (nonatomic, strong) UIButton *moreBtn;
 @property (nonatomic, strong) UIButton *downButton;
+@property (nonatomic, strong) UIButton *viewButton;
 
 @property (nonatomic, strong) UIButton *switchButton;
 @property (nonatomic, strong) UIButton *lightButton;
@@ -43,13 +45,17 @@ static NSInteger Height = 65;
     [self.view addSubview:self.bottomView];
     [self.bottomView addSubview:self.shotButton];
     [self.bottomView addSubview:self.moreBtn];
+    [self.bottomView addSubview:self.viewButton];
+    
     [self.view addSubview:self.customView];
     [self.view addSubview:self.downButton];
-    [self.view addSubview:self.switchButton];
-    [self.view addSubview:self.lightButton];
+//    [self.view addSubview:self.switchButton];
+//    [self.view addSubview:self.lightButton];
     self.view.backgroundColor = RGB(0xffffff, 1);
     self.bottomAlpha0 = NO;
 //    [self.cameraView start];
+    [[NSUserDefaults standardUserDefaults] setObject:@(1) forKey:ZPosition];
+    [[NSUserDefaults standardUserDefaults] synchronize];
     [self layoutViews];
 }
 
@@ -58,12 +64,17 @@ static NSInteger Height = 65;
 #pragma mark - 拍照
 - (void)shotAction:(UIButton *)sender{
     [self.cameraView shotImage:^(UIImage *image) {
+//    UIImage *image = Image_Paster(@"demo");
         [self displayImage:image];
     }];
 }
 
 - (void)displayImage:(UIImage *)images {
     ImageEditView *view = [[ImageEditView alloc] initWithFrame:self.view.frame];
+    view.saveImgBlock = ^(UIImage *image) {
+        self.viewButton.hidden = NO;
+        [self.viewButton setImage:image forState:UIControlStateNormal];
+    };
     view.editView.sourceImg = images;
     view.editView.pasterArray = [self.pasterStageView.pasterArray mutableCopy];
     [self.view addSubview:view];
@@ -71,41 +82,22 @@ static NSInteger Height = 65;
 }
 
 #pragma mark - lazyload
-- (UIButton *)moreBtn{
-    if (!_moreBtn) {
-        _moreBtn = [UIButton buttonWithType:UIButtonTypeCustom];
-        _moreBtn.layer.masksToBounds = YES;
-        _moreBtn.layer.cornerRadius = Height/2;
-        _moreBtn.backgroundColor = [UIColor blackColor];
-        [_moreBtn addTarget:self action:@selector(moreAction:) forControlEvents:UIControlEventTouchUpInside];
-    }
-    return _moreBtn;
-}
-
 - (void)moreAction:(UIButton *)sender{
     [UIView animateWithDuration:0.4 animations:^{
         [self.customView mas_remakeConstraints:^(MASConstraintMaker *make) {
             make.bottom.left.right.mas_equalTo(_bottomView);
             make.top.mas_equalTo(_bottomView.mas_top).mas_offset(-Height);
-
+            
         }];
         [self.view layoutIfNeeded];
+    } completion:^(BOOL finished) {
+        self.downButton.hidden = NO;
     }];
     
 }
 
-- (UIButton *)downButton{
-    if (!_downButton) {
-        _downButton = [UIButton buttonWithType:UIButtonTypeCustom];
-        _downButton.layer.masksToBounds = YES;
-        _downButton.layer.cornerRadius = Height/2;
-        _downButton.backgroundColor = [UIColor whiteColor];
-        [_downButton addTarget:self action:@selector(downAction) forControlEvents:UIControlEventTouchUpInside];
-    }
-    return _downButton;
-}
-
 - (void)downAction{
+    self.downButton.hidden = YES;
     [UIView animateWithDuration:0.4 animations:^{
         [self.customView mas_remakeConstraints:^(MASConstraintMaker *make) {
             make.bottom.left.right.mas_equalTo(_bottomView);
@@ -114,6 +106,45 @@ static NSInteger Height = 65;
         [self.view layoutIfNeeded];
     }];
 }
+
+- (UIButton *)moreBtn{
+    if (!_moreBtn) {
+        _moreBtn = [UIButton buttonWithType:UIButtonTypeCustom];
+        [_moreBtn setBackgroundImage:Image_Paster(@"up") forState:UIControlStateNormal];
+        [_moreBtn addTarget:self action:@selector(moreAction:) forControlEvents:UIControlEventTouchUpInside];
+    }
+    return _moreBtn;
+}
+
+- (UIButton *)viewButton{
+    if (!_viewButton) {
+        _viewButton = [UIButton buttonWithType:UIButtonTypeCustom];
+        _viewButton.hidden = YES;
+        _viewButton.imageView.contentMode = UIViewContentModeScaleAspectFill;
+        _viewButton.layer.cornerRadius = 30;
+        _viewButton.layer.masksToBounds = YES;
+        [_viewButton addTarget:self action:@selector(viewAction) forControlEvents:UIControlEventTouchUpInside];
+    }
+    return _viewButton;
+}
+- (void)viewAction{
+    SavedImgController *controller = [[SavedImgController alloc] init];
+//    [self.navigationController pushViewController:controller animated:YES];
+    [controller setModalTransitionStyle:UIModalTransitionStyleCoverVertical];
+    [self presentViewController:controller animated:YES completion:nil];
+}
+- (UIButton *)downButton{
+    if (!_downButton) {
+        _downButton = [UIButton buttonWithType:UIButtonTypeCustom];
+        _downButton.alpha = 0.6;
+        _downButton.hidden = YES;
+        [_downButton setBackgroundImage:Image_Paster(@"down") forState:UIControlStateNormal];
+        [_downButton addTarget:self action:@selector(downAction) forControlEvents:UIControlEventTouchUpInside];
+    }
+    return _downButton;
+}
+
+
 - (CameraView *)cameraView{
     if (!_cameraView) {
         _cameraView = [[CameraView alloc]init];
@@ -129,7 +160,12 @@ static NSInteger Height = 65;
 }
 - (pasterSelectView *)customView{
     if (!_customView) {
+        WeakSelf;
         _customView = [[pasterSelectView alloc]init];
+        _customView.pasterSelectBlock = ^(NSString *path) {
+            StrongSelf;
+            [strongSelf.pasterStageView addPasterWithImgPath:path];
+        };
     }
     return _customView;
 }
@@ -153,7 +189,7 @@ static NSInteger Height = 65;
 - (UIButton *)shotButton{
     if (!_shotButton) {
         _shotButton = [[UIButton alloc]init];
-        [_shotButton setImage:Image_Paster(@"camera") forState:UIControlStateNormal];
+        [_shotButton setImage:Image_Paster(@"camera1") forState:UIControlStateNormal];
         [_shotButton addTarget:self action:@selector(shotAction:) forControlEvents:UIControlEventTouchUpInside];
         
     }
@@ -164,8 +200,12 @@ static NSInteger Height = 65;
 
 - (XTPasterStageView *)pasterStageView{
     if (!_pasterStageView) {
-        
+        WeakSelf;
         _pasterStageView = [[XTPasterStageView alloc]initWithFrame: CGRectMake(0, 0,cameraWidth, cameraHeight)];
+        _pasterStageView.hideMoreBlock = ^{
+            StrongSelf;
+            [strongSelf downAction];
+        };
         _pasterStageView.backgroundColor = [UIColor clearColor];
     }
     return _pasterStageView;
@@ -200,7 +240,7 @@ static NSInteger Height = 65;
     [_downButton mas_makeConstraints:^(MASConstraintMaker *make) {
         make.left.mas_equalTo(_customView.mas_left);
         make.bottom.mas_equalTo(_customView.mas_top);
-        make.width.height.mas_equalTo(Height);
+        make.width.height.mas_equalTo(60);
     }];
    
     [_shotButton mas_makeConstraints:^(MASConstraintMaker *make) {
@@ -211,6 +251,12 @@ static NSInteger Height = 65;
     [_moreBtn mas_makeConstraints:^(MASConstraintMaker *make) {
         make.width.height.mas_equalTo(65);
         make.centerX.mas_equalTo(self.bottomView).centerOffset(CGPointMake(-ScreenWidth/4-80/2/2, 0));
+        make.centerY.mas_equalTo(self.bottomView);
+    }];
+    
+    [_viewButton mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.width.height.mas_equalTo(60);
+        make.centerX.mas_equalTo(self.bottomView).centerOffset(CGPointMake(ScreenWidth/4+80/2/2, 0));
         make.centerY.mas_equalTo(self.bottomView);
     }];
     

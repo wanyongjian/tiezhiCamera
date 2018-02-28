@@ -8,23 +8,25 @@
 
 #import "XTPasterView.h"
 
-#define PasterWidth        150.0
+#define PasterWidth        (150.0* (self.imagePaster.size.width/300))
 #define DeleteBtnWidth_2   15.0
 #define DeleteBtnWidth      30.0 //删除按钮宽、高
 #define BorderWidth          1.0
 #define SECURITY_LENGTH     75.0
-#define MinLength (150/2)
+#define MinLength (PasterWidth/2)
 
 @interface XTPasterView ()
 {
     CGFloat deltaAngle;
     CGPoint prevPoint;
-    CGPoint touchStart;
+    CGPoint lastTouchPoint;
 }
 
-@property (nonatomic,strong) UIImageView    *imgContentView ;
+@property (nonatomic,strong) UIImageView    *imageView ;
 @property (nonatomic,strong) UIImageView    *deleteView ;
 @property (nonatomic,strong) UIImageView    *resizeView ;
+@property (nonatomic,assign) CGFloat imageRatio;
+//@property (nonatomic,assign) NSInteger zPosition;
 @end
 
 
@@ -35,13 +37,17 @@
      [editView addSubview:self] ;
 }
 
-- (instancetype)initWithStageView:(XTPasterStageView *)stageView pasterID:(int)pasterID img:(UIImage *)img
+- (instancetype)initWithStageView:(XTPasterStageView *)stageView pasterID:(int)pasterID imgPath:(NSString *)path pasterType:(pasterType)type
 {
     if (self = [super init]){
+        self.stageView = stageView;
+        
+        self.pasterType = type;
         self.pasterID = pasterID ;
-        self.imagePaster = img ;
-        [self setupWithStageFrame:stageView.frame] ;
-        [self addSubview:self.imgContentView];
+        self.imgPath = path;
+        self.imagePaster = [UIImage imageWithContentsOfFile:path];
+        [self setSelfFrame:stageView.frame pasterType:type] ;
+        [self addSubview:self.imageView];
         [self addSubview:self.deleteView];
         [self addSubview:self.resizeView];
         self.onFirstResponder = YES ;
@@ -50,17 +56,81 @@
     return self;
 }
 
-- (void)setupWithStageFrame:(CGRect)stageFrame{
-    self.frame = CGRectMake(0, 0, PasterWidth, PasterWidth) ;
-    self.center = CGPointMake(stageFrame.size.width / 2, stageFrame.size.height / 2) ;
-    self.backgroundColor = nil ;
+- (void)setSelfFrame:(CGRect)stageFrame pasterType:(pasterType)type{
+    //图片300像素对应150长度,等比缩放
+    CGFloat width = PasterWidth ;
+    CGFloat height = (PasterWidth-DeleteBtnWidth)*self.imageRatio+DeleteBtnWidth;
+    switch (type) {
+        case pasterTypeNone:
+        case pasterTypeBeard:
+        case pasterTypeFace:{
+            self.frame = CGRectMake(0, 0, width, height) ;
+            self.center = CGPointMake(stageFrame.size.width/2, stageFrame.size.height/2) ;
+        }
+            break;
+        case pasterTypeGlass:{
+            self.frame = CGRectMake(0, 0, width, height) ;
+            self.center = CGPointMake(stageFrame.size.width/2, stageFrame.size.height/2 - (150 * 82/464)) ;
+        }
+            break;
+        case pasterTypeHelmet:{
+            self.frame = CGRectMake(0, 0, width, height) ;
+            self.center = CGPointMake(stageFrame.size.width/2, stageFrame.size.height/2-(150*80/464)) ;
+        }
+            break;
+        case pasterTypeHair:{
+            self.frame = CGRectMake(0, 0, width, height) ;
+            self.center = CGPointMake(stageFrame.size.width/2, stageFrame.size.height/2-(ScreenWidth/2/2+50)+height/2) ;
+        }
+            break;
+        case pasterTypeMouse:{
+            self.frame = CGRectMake(0, 0, width, height) ;
+            self.center = CGPointMake(stageFrame.size.width/2-width/2, stageFrame.size.height/2+height/2) ;
+        }
+            break;
+        case pasterTypeMouth:{
+            self.frame = CGRectMake(0, 0, width, height) ;
+            self.center = CGPointMake(stageFrame.size.width/2, stageFrame.size.height/2+(ScreenWidth/2*43/464)) ;
+        }
+            break;
+        case pasterTypeHat: {
+            self.frame = CGRectMake(0, 0, width, height) ;
+            self.center = CGPointMake(stageFrame.size.width/2, stageFrame.size.height/2-(150 * 140/464)-height/2) ;
+            break;
+        }
+            break;
+        case pasterBowtie: { //领结
+            self.frame = CGRectMake(0, 0, width, height) ;
+            self.center = CGPointMake(stageFrame.size.width/2, stageFrame.size.height/2+150/2) ;
+        }
+            break;
+        case pasterTypeNecklace:{
+            self.frame = CGRectMake(0, 0, width, height) ;
+            self.center = CGPointMake(stageFrame.size.width / 2, stageFrame.size.height / 2+(150*100/464+height/2)) ;
+        }
+            break;
+        case pasterTypeWingLeft:{   //左边翅膀
+            self.frame = CGRectMake(0, 0, width, height) ;
+            self.center = CGPointMake(stageFrame.size.width / 2-ScreenWidth/4, stageFrame.size.height / 2+height/2) ;
+        }
+            break;
+        case pasterTypeWingRight:{  //右边翅膀
+            self.frame = CGRectMake(0, 0, width, height) ;
+            self.center = CGPointMake(stageFrame.size.width / 2+ScreenWidth/4, stageFrame.size.height / 2+height/2) ;
+        }
+            break;
+    }
+    
+//    self.backgroundColor = nil ;
     
     //添加轻触手势
     UITapGestureRecognizer *tapGesture = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(tap:)] ;
     [self addGestureRecognizer:tapGesture] ;
     
-    self.userInteractionEnabled = YES ;
+    UIPanGestureRecognizer *panGesture = [[UIPanGestureRecognizer alloc]initWithTarget:self action:@selector(panAction:)];
+    [self addGestureRecognizer:panGesture];
     
+    self.userInteractionEnabled = YES ;
     //刚创建时tan角度值
     deltaAngle = atan2(self.frame.origin.y+self.frame.size.height - self.center.y,
                        self.frame.origin.x+self.frame.size.width - self.center.x) ;
@@ -74,8 +144,8 @@
         prevPoint = [recognizer locationInView:self];
     }else if([recognizer state] == UIGestureRecognizerStateChanged){
         // 限制缩小的范围 最小75像素
-        if (self.bounds.size.width < MinLength || self.bounds.size.height < MinLength){
-            self.bounds = CGRectMake(self.bounds.origin.x,self.bounds.origin.y,MinLength + 1 ,MinLength + 1);
+        if (self.bounds.size.width < MinLength){
+            self.bounds = CGRectMake(self.bounds.origin.x,self.bounds.origin.y,MinLength + 1 ,MinLength*self.imageRatio + 1);
             self.resizeView.frame =CGRectMake(self.bounds.size.width-DeleteBtnWidth,self.bounds.size.height-DeleteBtnWidth,DeleteBtnWidth,DeleteBtnWidth);
             //缩放后的位置
             prevPoint = [recognizer locationInView:self];
@@ -85,17 +155,19 @@
             //水平平移的距离
             wChange = (point.x - prevPoint.x);
             CGFloat finalWidth  = self.bounds.size.width + (wChange) ;
-            CGFloat finalHeight = self.bounds.size.height + (wChange) ;
+            
+            CGFloat finalHeight = self.bounds.size.height *(1+wChange/self.bounds.size.width) ;
             //限制大小为150*0.5 < self < 150*1.5
             if (finalWidth > PasterWidth*(1+1)){
                 finalWidth = PasterWidth*(1+1);
             }else if (finalWidth < PasterWidth*(1-0.5)){
                 finalWidth = PasterWidth*(1-0.5) ;
             }
-            if (finalHeight > PasterWidth*(1+1)){
-                finalHeight = PasterWidth*(1+1) ;
-            }else if (finalHeight < PasterWidth*(1-0.5)){
-                finalHeight = PasterWidth*(1-0.5) ;
+            CGFloat radio = self.imagePaster.size.height/self.imagePaster.size.width;
+            if (finalHeight > PasterWidth*radio*(1+1)){
+                finalHeight = PasterWidth*radio*(1+1) ;
+            }else if (finalHeight < PasterWidth*radio*(1-0.5)){
+                finalHeight = PasterWidth*radio*(1-0.5) ;
             }
             
             self.bounds = CGRectMake(self.bounds.origin.x,self.bounds.origin.y,finalWidth,finalHeight) ;
@@ -116,7 +188,8 @@
 
 - (void)setImagePaster:(UIImage *)imagePaster{
     _imagePaster = imagePaster ;
-    self.imgContentView.image = imagePaster ;
+    self.imageRatio = self.imagePaster.size.height/self.imagePaster.size.width;
+    self.imageView.image = imagePaster ;
 }
 
 /** 轻触手势 */
@@ -128,76 +201,65 @@
     }
 }
 
-/** 平移 */
-- (void)touchesBegan:(NSSet *)touches withEvent:(UIEvent *)event{
-    self.onFirstResponder = YES ;
-    if (self.firstResponderBlock) {
-        self.firstResponderBlock(self.pasterID);
+- (void)panAction:(UIPanGestureRecognizer *)panGesture{
+    if (panGesture.state == UIGestureRecognizerStateBegan) {
+        NSLog(@"开始移动");
     }
-    UITouch *touch = [touches anyObject] ;
-    touchStart = [touch locationInView:self.superview] ;
-}
+    //获取拖拽手势在self.view 的拖拽姿态
+    CGPoint translation = [panGesture translationInView:self.stageView];
+    CGPoint newCenter = CGPointMake(panGesture.view.center.x + translation.x, panGesture.view.center.y + translation.y);;
+    if (newCenter.x > self.superview.bounds.size.width){
+        newCenter.x = self.superview.bounds.size.width;
+    }
+    if (newCenter.x < 0 ){
+        newCenter.x = 0 ;
+    }
 
-- (void)touchesMoved:(NSSet *)touches withEvent:(UIEvent *)event{
-    CGPoint touchLocation = [[touches anyObject] locationInView:self];
-    if (CGRectContainsPoint(self.resizeView.frame, touchLocation)) {
-        return;
+//    CGFloat midPointY = CGRectGetMidY(self.bounds);
+    if (newCenter.y > self.superview.bounds.size.height  ){
+        newCenter.y = self.superview.bounds.size.height;
     }
-    CGPoint touch = [[touches anyObject] locationInView:self.superview];
-    [self translateUsingTouchLocation:touch] ;
-    touchStart = touch;
-}
-
-- (void)translateUsingTouchLocation:(CGPoint)touchPoint{
-    CGPoint newCenter = CGPointMake(touchPoint.x - touchStart.x + self.center.x,touchPoint.y - touchStart.y +self.center.y) ;
-    // Ensure the translation won't cause the view to move offscreen. BEGIN
-    CGFloat midPointX = CGRectGetMidX(self.bounds) ;
-    if (newCenter.x > self.superview.bounds.size.width - midPointX)
-    {
-        newCenter.x = self.superview.bounds.size.width - midPointX;
-    }
-    if (newCenter.x < midPointX )
-    {
-        newCenter.x = midPointX ;
+    if (newCenter.y < 0 ){
+        newCenter.y = 0;
     }
     
-    CGFloat midPointY = CGRectGetMidY(self.bounds);
-    if (newCenter.y > self.superview.bounds.size.height - midPointY )
-    {
-        newCenter.y = self.superview.bounds.size.height - midPointY;
-    }
-    if (newCenter.y < midPointY )
-    {
-        newCenter.y = midPointY;
-    }
-    
-    // Ensure the translation won't cause the view to move offscreen. END
-    self.center = newCenter;
+    //改变panGestureRecognizer.view的中心点 就是self.imageView的中心点
+    panGesture.view.center = newCenter;
+    //重置拖拽手势的姿态
+    [panGesture setTranslation:CGPointZero inView:self.stageView];
 }
-
-
 
 #pragma mark -- Properties
 - (void)setOnFirstResponder:(BOOL)onFirstResponder{
    _onFirstResponder = onFirstResponder ;
     self.deleteView.hidden = !onFirstResponder ;
     self.resizeView.hidden = !onFirstResponder ;
-    self.imgContentView.layer.borderWidth = onFirstResponder ? BorderWidth : 0.0f ;
+    self.imageView.layer.borderWidth = onFirstResponder ? BorderWidth : 0.0f ;
+    
+    if (onFirstResponder == YES) {
+        NSInteger zposition = [[[NSUserDefaults standardUserDefaults] objectForKey:ZPosition] integerValue];
+        self.layer.zPosition = zposition++;
+
+        [[NSUserDefaults standardUserDefaults] setObject:@(zposition) forKey:ZPosition];
+        [[NSUserDefaults standardUserDefaults] synchronize];
+    }
 }
 
-- (UIImageView *)imgContentView{
-    if (!_imgContentView){
-        CGFloat sliderContent = PasterWidth - DeleteBtnWidth_2 * 2 ;
-        CGRect rect = CGRectMake(DeleteBtnWidth_2, DeleteBtnWidth_2, sliderContent, sliderContent) ;
+- (UIImageView *)imageView{
+    if (!_imageView){
+        CGFloat sliderContent = PasterWidth - DeleteBtnWidth;
+        CGFloat sliderContentHeight = sliderContent*self.imageRatio;
         
-        _imgContentView = [[UIImageView alloc] initWithFrame:rect] ;
-        _imgContentView.backgroundColor = nil ;
-        _imgContentView.layer.borderColor = [UIColor whiteColor].CGColor ;
-        _imgContentView.layer.borderWidth = BorderWidth ;
-        _imgContentView.contentMode = UIViewContentModeScaleAspectFit ;
-        _imgContentView.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
+        CGRect rect = CGRectMake(DeleteBtnWidth_2, DeleteBtnWidth_2, sliderContent, sliderContentHeight) ;
+        
+        _imageView = [[UIImageView alloc] initWithFrame:rect] ;
+        _imageView.backgroundColor = nil ;
+        _imageView.layer.borderColor = [UIColor whiteColor].CGColor ;
+        _imageView.layer.borderWidth = BorderWidth ;
+        _imageView.contentMode = UIViewContentModeScaleAspectFit ;
+        _imageView.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
     }
-    return _imgContentView ;
+    return _imageView ;
 }
 
 - (UIImageView *)resizeView{
@@ -208,7 +270,7 @@
                                                                         DeleteBtnWidth)
                             ] ;
         _resizeView.userInteractionEnabled = YES;
-        _resizeView.image = Image_Paster(@"resize");
+        _resizeView.image = Image_Paster(@"resize1");
 
         UIPanGestureRecognizer *panResizeGesture = [[UIPanGestureRecognizer alloc]
                                                     initWithTarget:self
@@ -226,20 +288,20 @@
         
         UITapGestureRecognizer *tap = [[UITapGestureRecognizer alloc]
                                                     initWithTarget:self
-                                                    action:@selector(btDeletePressed:)] ;
+                                                    action:@selector(deleteAction:)] ;
         [_deleteView addGestureRecognizer:tap] ;
     }
     return _deleteView ;
 }
 
-- (void)btDeletePressed:(id)btDel{
+- (void)deleteAction:(id)btDel{
     [self remove] ;
 }
 
 - (void)remove{
     [self removeFromSuperview] ;
     if (self.removePasterBlock) {
-        self.firstResponderBlock(self.pasterID);
+        self.removePasterBlock(self.pasterID);
     }
 }
 @end

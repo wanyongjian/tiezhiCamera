@@ -67,7 +67,7 @@
     self.previewLayer.videoGravity = AVLayerVideoGravityResizeAspectFill;
     self.previewLayer.frame = CGRectMake(0, 0,viewWidth, viewHeight);
     [self.layer addSublayer:self.previewLayer];
-    
+//    self.backgroundColor = [UIColor blueColor];
     /** 设备取景开始*/
     [self.session startRunning];
 }
@@ -106,7 +106,6 @@
          UIImage *t_image = [UIImage imageWithData:imageData];
          // 调整方向、裁剪4：3
          t_image = [UIImage getImage3x4:t_image];
-         
          Image(t_image);
         
      }];

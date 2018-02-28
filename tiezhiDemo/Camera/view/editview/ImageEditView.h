@@ -8,8 +8,11 @@
 
 #import <UIKit/UIKit.h>
 #import "PasterEditView.h"
+typedef void(^saveImg)(UIImage *image);
 
 @interface ImageEditView : UIView
 
 @property (nonatomic, strong) PasterEditView *editView;
+@property (nonatomic, copy) saveImg saveImgBlock;
+- (void)animation;
 @end

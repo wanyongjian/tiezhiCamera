@@ -13,17 +13,8 @@
 // You will also need to set the Prefix Header build setting of one or more of your targets to reference this file.
 #import "Masonry.h"
 #import "UIImage+cut.h"
-#define WeakSelf __weak __typeof(self)weakSelf = self
-#define StrongSelf __strong __typeof(weakSelf)strongSelf = weakSelf
+#import <SDWebImage/UIImageView+WebCache.h>
+#import "macro.h"
+#import "SaveManager.h"
 
-#define ScreenWidth MIN([UIScreen mainScreen].bounds.size.width, [UIScreen mainScreen].bounds.size.height)
-#define ScreenHeight MAX([UIScreen mainScreen].bounds.size.width, [UIScreen mainScreen].bounds.size.height)
-
-#define cameraWidth ScreenWidth
-#define cameraHeight ((cameraWidth/480) *640)
-
-#define Image_Paster(name) [UIImage imageWithContentsOfFile:[[[NSBundle mainBundle] resourcePath] stringByAppendingPathComponent:[NSString stringWithFormat:@"Image.bundle/images/%@",name]]]
-
-//#define RGB(r,g,b) [UIColor colorWithRed:r green:g blue:b alpha:1]
-#define RGB(c,a) [UIColor colorWithRed:((c&0xFF0000)>>16)/255.f green:((c&0xFF00)>>8)/255.f blue:(c&0xFF)/255.f alpha:a]
 #endif /* PrefixHeader_pch */
